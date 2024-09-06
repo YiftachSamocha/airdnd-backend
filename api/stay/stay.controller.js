@@ -4,14 +4,13 @@ import { stayService } from './stay.service.js'
 export async function getStays(req, res) {
 	try {
 		const filterBy = {
-			txt: req.query.txt || '',
-			minSpeed: +req.query.minSpeed || 0,
-            sortField: req.query.sortField || '',
-            sortDir: req.query.sortDir || 1,
-			pageIdx: req.query.pageIdx,
+			city: req.query.city || '',
+			country: req.query.country || '',
+			startDate: req.query.startDate || '',
+			endDate: req.query.endDate || '',
 		}
 		const stays = await stayService.query(filterBy)
-		res.json(stays)
+		res.json(stays.map(stay => stay.name))
 	} catch (err) {
 		logger.error('Failed to get stays', err)
 		res.status(400).send({ err: 'Failed to get stays' })
@@ -44,12 +43,12 @@ export async function addStay(req, res) {
 
 export async function updateStay(req, res) {
 	const { loggedinUser, body: stay } = req
-    const { _id: userId, isAdmin } = loggedinUser
+	const { _id: userId, isAdmin } = loggedinUser
 
-    if(!isAdmin && stay.owner._id !== userId) {
-        res.status(403).send('Not your stay...')
-        return
-    }
+	if (!isAdmin && stay.owner._id !== userId) {
+		res.status(403).send('Not your stay...')
+		return
+	}
 
 	try {
 		const updatedStay = await stayService.update(stay)

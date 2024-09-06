@@ -69,7 +69,7 @@ const kitchenImg = '../../assets/imgs/Extra/kitchen.png'
 const washingMashineImg = '../../assets/imgs/Extra/washing-mashine.png'
 const wifiImg = '../../assets/imgs/Extra/wifi.png'
 
-export function createStayData(users, listingsPerHost = 3) {
+export function createStayData(users, listingsPerHost = 6) {
     const stays = []
     const hosts = users.filter(user => user.host)
     for (let i = 0; i < hosts.length; i++) {
@@ -620,40 +620,67 @@ const labels = [
 ]
 
 function getRandomDateRange(startDate, endDate) {
-    const start = new Date(startDate)
-    const end = new Date(endDate)
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    const randomStart = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()))
-    const minEnd = new Date(randomStart.getTime())
-    minEnd.setDate(randomStart.getDate() + 2)
+    // Generate a random start date within the given range
+    const randomStart = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 
-    const randomEnd = new Date(minEnd.getTime() + Math.random() * (end.getTime() - minEnd.getTime()))
+    // Set a minimum end date 2 days after the random start date
+    const minEnd = new Date(randomStart.getTime());
+    minEnd.setDate(randomStart.getDate() + 2);
+
+    // Generate a random end date after the minimum end date
+    const randomEnd = new Date(minEnd.getTime() + Math.random() * (end.getTime() - minEnd.getTime()));
 
     return {
-        startDate: randomStart.toISOString().split('T')[0],
-        endDate: randomEnd.toISOString().split('T')[0],
-    }
+        startDate: randomStart,
+        endDate: randomEnd,
+    };
+}
+
+// Helper function to check if two date ranges overlap
+function isOverlapping(range1, range2) {
+    return range1.startDate < range2.endDate && range2.startDate < range1.endDate;
 }
 
 function generateAvailabilityRanges() {
     const months = [
-        { start: 1693526400000, end: 1696032000000 },
-        { start: 1696147200000, end: 1698777600000 },
-        { start: 1698854400000, end: 1701475200000 },
-        { start: 1701561600000, end: 1704182400000 },
-        { start: 1704268800000, end: 1706841600000 },
-    ]
+        { start: new Date('2024-09-01').getTime(), end: new Date('2024-09-30').getTime() },
+        { start: new Date('2024-10-01').getTime(), end: new Date('2024-10-31').getTime() },
+        { start: new Date('2024-11-01').getTime(), end: new Date('2024-11-30').getTime() },
+        { start: new Date('2024-12-01').getTime(), end: new Date('2024-12-31').getTime() },
+        { start: new Date('2025-01-01').getTime(), end: new Date('2025-01-31').getTime() },
+    ];
 
-    const availabilityRanges = []
+    const availabilityRanges = [];
 
     months.forEach(month => {
-        const numRanges = Math.floor(Math.random() * 2) + 2
+        const numRanges = Math.min(Math.floor(Math.random() * 2) + 2, 10); // Generate 2-3 ranges, with a max of 10
+
         for (let i = 0; i < numRanges; i++) {
-            availabilityRanges.push(getRandomDateRange(month.start, month.end))
+            let newRange;
+
+            // Generate a new range and check if it overlaps with any existing range
+            do {
+                newRange = getRandomDateRange(month.start, month.end);
+            } while (availabilityRanges.some(existingRange => isOverlapping(existingRange, newRange)));
+
+            // Push the non-overlapping range to the result array
+            availabilityRanges.push(newRange);
+
+            // Limit to 10 reservations
+            if (availabilityRanges.length >= 10) {
+                break;
+            }
         }
-    })
+    });
+
     return availabilityRanges;
 }
+
+
+
 
 const locations = [
     { country: 'Greece', city: 'Athens', lat: 37.98, lng: 23.73, img: greeceImg },

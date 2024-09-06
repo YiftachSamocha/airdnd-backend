@@ -21,27 +21,38 @@ export const stayService = {
 	removeStayMsg,
 }
 
-async function query(filterBy = { txt: '' }) {
+async function query(filterBy = {}) {
 	_createData()
 
+	try {
+		const collection = await dbService.getCollection('stay')
+		let { city, country, startDate, endDate } = filterBy
 
-	// try {
-	//     const criteria = _buildCriteria(filterBy)
-	//     const sort = _buildSort(filterBy)
+		let filter = {}
 
-	// 	const collection = await dbService.getCollection('stay')
-	// 	var stayCursor = await collection.find(criteria, { sort })
+		// WHERE (Filter by city and country)
+		if (city && country) {
+			filter['location.city'] = city;
+			if (country !== 'Im flexible') {
+				filter['location.country'] = country;
+			}
+		}
 
-	// 	if (filterBy.pageIdx !== undefined) {
-	// 		stayCursor.skip(filterBy.pageIdx * PAGE_SIZE).limit(PAGE_SIZE)
-	// 	}
+		// WHEN (Filter by start and end date)
+		if (startDate && endDate) {
+			startDate = new Date(startDate);
+			endDate = new Date(endDate);
+			filter = { ...filter, ... _filterWhen({ startDate, endDate }) }
+		}
 
-	// 	const stays = stayCursor.toArray()
-	// 	return stays
-	// } catch (err) {
-	// 	logger.error('cannot find stays', err)
-	// 	throw err
-	// }
+		
+
+		let stays = await collection.find(filter).toArray()
+		return stays;
+	} catch (err) {
+		logger.error('cannot find stays', err)
+		throw err
+	}
 }
 
 async function getById(stayId) {
@@ -165,16 +176,62 @@ async function _createData() {
 	}
 }
 
-function _buildCriteria(filterBy) {
-	const criteria = {
-		vendor: { $regex: filterBy.txt, $options: 'i' },
-		speed: { $gte: filterBy.minSpeed },
-	}
+function _filterWhen(vacationRange) {
+	const { startDate, endDate } = vacationRange
 
-	return criteria
+	return {
+		reservedDates: {
+			$not: {
+				$elemMatch: {
+					$or: [
+						{
+							startDate: { $lt: startDate },
+							endDate: { $gt: startDate, $lt: endDate }
+						},
+						{
+							startDate: { $gte: startDate, $lt: endDate },
+							endDate: { $gt: endDate }
+						},
+						{
+							startDate: { $lte: startDate },
+							endDate: { $gte: endDate }
+						},
+						{
+							startDate: { $gte: startDate, $lt: endDate },
+							endDate: { $lte: endDate }
+						}
+					]
+				}
+			}
+		}
+	}
+}
+function _filterWho(sleep, who) {
+	const amount = who.adults + who.children + who.infants
+	if (amount === 0) return true
+	if (sleep.maxCapacity < amount) return false
+	const minimumCapacity = sleep.rooms.length
+	if (minimumCapacity > amount) return false
+	return true
+
 }
 
-function _buildSort(filterBy) {
-	if (!filterBy.sortField) return {}
-	return { [filterBy.sortField]: filterBy.sortDir }
+function _filterExtra(stay, extra) {
+	const { type, price, rooms, amenities, booking, standout } = extra
+	const filterAmenities = amenities.filter(amenity => amenity.isSelected)
+	if (!filterAmenities.every(amenity =>
+		stay.amenities.some(stayAmenity => stayAmenity.name === amenity.name))) return false
+	if (type !== 'any' && type !== stay.type) return false
+	if (price[0] + price[1] !== 0) {
+		if (stay.price.night < price[0] || stay.price.night > price[1]) return false
+	}
+	if ((rooms.bedrooms + rooms.rooms + rooms.bathrooms) !== 0) {
+		if (stay.sleep.bedrooms < rooms.bedrooms || stay.sleep.bathrooms < rooms.bathrooms || stay.sleep.rooms.length < rooms.rooms) return false
+	}
+	if (booking.instant && !stay.highlights.some(highlight => highlight.main === 'Great check-in experience')) return false
+	if (booking.self && !stay.highlights.some(highlight => highlight.main === 'Self check-in')) return false
+	if (booking.pets && !stay.highlights.some(highlight => highlight.main === 'Pet-friendly')) return false
+	if (standout.favorite && !stay.highlights.some(highlight => highlight.main === 'Great value')) return false
+	if (standout.luxe && !stay.labels.some(label => label.label === 'luxe')) return false
+	return true
 }
