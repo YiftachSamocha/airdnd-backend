@@ -14,9 +14,9 @@ export const authService = {
 }
 
 async function login(username, password) {
-	logger.debug(`auth.service - login with username: ${username}`)
+	// logger.debug(`auth.service - login with username: ${username}`)
 
-	const user = await userService.getByUsername(username)
+	const user = await userService.getByCriteria(username, password)
 	if (!user) return Promise.reject('Invalid username or password')
 
 	// TODO: un-comment for real login
@@ -24,30 +24,32 @@ async function login(username, password) {
 	// if (!match) return Promise.reject('Invalid username or password')
 
 	delete user.password
+	delete user.username
 	user._id = user._id.toString()
 	return user
 }
 
-async function signup({ username, password, fullname, imgUrl, isAdmin }) {
-	const saltRounds = 10
+async function signup({ username, password, fullname }) {
+	// const saltRounds = 10
 
-	logger.debug(`auth.service - signup with username: ${username}, fullname: ${fullname}`)
+	// logger.debug(`auth.service - signup with username: ${username}, fullname: ${fullname}`)
 	if (!username || !password || !fullname) return Promise.reject('Missing required signup information')
 
-	const userExist = await userService.getByUsername(username)
+	const userExist = await userService.getByCriteria(username, password)
 	if (userExist) return Promise.reject('Username already taken')
+	const imgUrl = 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
 
-	const hash = await bcrypt.hash(password, saltRounds)
-	return userService.add({ username, password: hash, fullname, imgUrl, isAdmin })
+	// const hash = await bcrypt.hash(password, saltRounds)
+	return userService.add({ username, password, fullname, imgUrl })
 }
 
 function getLoginToken(user) {
-	const userInfo = { 
-        _id: user._id, 
-        fullname: user.fullname, 
-        score: user.score,
-        isAdmin: user.isAdmin,
-    }
+	const userInfo = {
+		_id: user._id,
+		fullname: user.fullname,
+		score: user.score,
+		isAdmin: user.isAdmin,
+	}
 	return cryptr.encrypt(JSON.stringify(userInfo))
 }
 
