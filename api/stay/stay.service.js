@@ -26,15 +26,17 @@ async function query(filterBy = {}) {
 
 	try {
 		const collection = await dbService.getCollection('stay')
-		let { city, country, startDate, endDate } = filterBy
+		let { city, country, startDate, endDate, adults, children, infants,
+			label, type, price, rooms, amenities, booking, standout
+		} = filterBy
 
 		let filter = {}
 
 		// WHERE (Filter by city and country)
 		if (city && country) {
-			filter['location.city'] = city;
+			filter['location.city'] = city
 			if (country !== 'Im flexible') {
-				filter['location.country'] = country;
+				filter['location.country'] = country
 			}
 		}
 
@@ -42,13 +44,27 @@ async function query(filterBy = {}) {
 		if (startDate && endDate) {
 			startDate = new Date(startDate);
 			endDate = new Date(endDate);
-			filter = { ...filter, ... _filterWhen({ startDate, endDate }) }
+			filter = { ...filter, ..._filterWhen({ startDate, endDate }) }
+		}
+		//WHERE
+		if (adults || children || infants) {
+			const whoFilter = _filterWho({ adults, children, infants })
+			filter = { ...filter, ...whoFilter }
+		}
+		//LABEL
+		if (label && label !== 'icons') {
+			filter = {
+				...filter, labels: { $elemMatch: { label } }
+			}
 		}
 
-		
+		//EXTRA
+		if (type || price || rooms || amenities || booking || standout) {
+			filter = { ...filter, ..._filterExtra({ type, price, rooms, amenities, booking, standout }) }
+		}
 
 		let stays = await collection.find(filter).toArray()
-		return stays;
+		return stays
 	} catch (err) {
 		logger.error('cannot find stays', err)
 		throw err
@@ -206,32 +222,66 @@ function _filterWhen(vacationRange) {
 		}
 	}
 }
-function _filterWho(sleep, who) {
-	const amount = who.adults + who.children + who.infants
-	if (amount === 0) return true
-	if (sleep.maxCapacity < amount) return false
-	const minimumCapacity = sleep.rooms.length
-	if (minimumCapacity > amount) return false
-	return true
-
+function _filterWho({ adults = 0, children = 0, infants = 0 }) {
+	const amount = Number(adults) + Number(children) + Number(infants)
+	if (amount === 0) return {}
+	const filter = {
+		'sleep.maxCapacity': { $gte: amount },
+		$expr: { $lte: [{ $size: "$sleep.rooms" }, amount] }
+	}
+	return filter
 }
 
-function _filterExtra(stay, extra) {
-	const { type, price, rooms, amenities, booking, standout } = extra
-	const filterAmenities = amenities.filter(amenity => amenity.isSelected)
-	if (!filterAmenities.every(amenity =>
-		stay.amenities.some(stayAmenity => stayAmenity.name === amenity.name))) return false
-	if (type !== 'any' && type !== stay.type) return false
-	if (price[0] + price[1] !== 0) {
-		if (stay.price.night < price[0] || stay.price.night > price[1]) return false
+function _filterExtra({ type, price, rooms, amenities, booking, standout }) {
+	price = price.length ? [Number(price[0]), Number(price[1])] : []
+	rooms = { rooms: Number(rooms.rooms), bathrooms: Number(rooms.bathrooms), bedrooms: Number(rooms.bedrooms) }
+	let filter = {}
+
+	if (amenities.length) {
+		console.log(amenities)
+		amenities = Array.isArray(amenities) ? amenities : [amenities]
+		console.log(amenities)
+		filter['amenities.name'] = { $all: amenities }
 	}
-	if ((rooms.bedrooms + rooms.rooms + rooms.bathrooms) !== 0) {
-		if (stay.sleep.bedrooms < rooms.bedrooms || stay.sleep.bathrooms < rooms.bathrooms || stay.sleep.rooms.length < rooms.rooms) return false
+	if (type && type !== 'any') {
+		filter['type'] = type
 	}
-	if (booking.instant && !stay.highlights.some(highlight => highlight.main === 'Great check-in experience')) return false
-	if (booking.self && !stay.highlights.some(highlight => highlight.main === 'Self check-in')) return false
-	if (booking.pets && !stay.highlights.some(highlight => highlight.main === 'Pet-friendly')) return false
-	if (standout.favorite && !stay.highlights.some(highlight => highlight.main === 'Great value')) return false
-	if (standout.luxe && !stay.labels.some(label => label.label === 'luxe')) return false
-	return true
+	if (price.length && (price[0] + price[1] !== 0)) {
+		console.log(price)
+		filter['price.night'] = { $gte: price[0], $lte: price[1] }
+	}
+	if (rooms.bedrooms) {
+		filter['sleep.bedrooms'] = { $gte: rooms.bedrooms };
+	}
+	if (rooms.bathrooms) {
+		filter['sleep.bathrooms'] = { $gte: rooms.bathrooms };
+	}
+	if (rooms.rooms) {
+		filter['$expr'] = { $gte: [{ $size: '$sleep.rooms' }, rooms.rooms] };
+	}
+	let bookingConditions = []
+	if (booking.instant) {
+		bookingConditions.push({ 'highlights.main': 'Great check-in experience' })
+	}
+	if (booking.self) {
+		bookingConditions.push({ 'highlights.main': 'Self check-in' })
+	}
+	if (booking.pets) {
+		bookingConditions.push({ 'highlights.main': 'Pet-friendly' })
+	}
+	if (bookingConditions.length) {
+		filter['$and'] = bookingConditions
+	}
+	let standoutConditions = []
+	if (standout.favorite) {
+		standoutConditions.push({ 'highlights.main': 'Great value' })
+	}
+	if (standout.luxe) {
+		standoutConditions.push({ 'highlights.main': 'Luxury stay' })
+	}
+	if (standoutConditions.length) {
+		filter['$and'] = [...(filter['$and'] || []), ...standoutConditions]
+	}
+	console.log(filter)
+	return filter
 }

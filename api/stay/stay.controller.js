@@ -8,9 +8,19 @@ export async function getStays(req, res) {
 			country: req.query.country || '',
 			startDate: req.query.startDate || '',
 			endDate: req.query.endDate || '',
+			adults: req.query.adults || 0,
+			children: req.query.children || 0,
+			infants: req.query.infants || 0,
+			label: req.query.label || '',
+			type: req.query.type || '',
+			price: req.query.price || [],
+			rooms: req.query.rooms || {},
+			amenities: req.query.amenities || [],
+			booking: req.query.booking || {},
+			standout: req.query.standout || {},
 		}
 		const stays = await stayService.query(filterBy)
-		res.json(stays.map(stay => stay.name))
+		res.json(stays.map(stay => stay.highlights))
 	} catch (err) {
 		logger.error('Failed to get stays', err)
 		res.status(400).send({ err: 'Failed to get stays' })

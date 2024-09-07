@@ -69,7 +69,7 @@ const kitchenImg = '../../assets/imgs/Extra/kitchen.png'
 const washingMashineImg = '../../assets/imgs/Extra/washing-mashine.png'
 const wifiImg = '../../assets/imgs/Extra/wifi.png'
 
-export function createStayData(users, listingsPerHost = 6) {
+export function createStayData(users, listingsPerHost = 2) {
     const stays = []
     const hosts = users.filter(user => user.host)
     for (let i = 0; i < hosts.length; i++) {
@@ -78,6 +78,7 @@ export function createStayData(users, listingsPerHost = 6) {
             stays.push(stay)
         }
     }
+    
     return stays
 }
 
@@ -448,7 +449,14 @@ const highlights = [
         sub: 'Check-in is easy with this hosts detailed',
         imgUrl: '/src/assets/imgs/labels/trending.jpeg'
 
+    },
+    {
+        main: 'Luxury stay',
+        sub: 'Exceptional and uniqe place',
+        imgUrl: '/src/assets/imgs/labels/luxe.jpeg'
+
     }
+
 ]
 const types = ['home', 'room', 'apartment', 'villa',]
 const amenities = [
