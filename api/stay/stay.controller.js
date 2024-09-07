@@ -20,7 +20,7 @@ export async function getStays(req, res) {
 			standout: req.query.standout || {},
 		}
 		const stays = await stayService.query(filterBy)
-		res.json(stays.map(stay => stay.highlights))
+		res.json(stays)
 	} catch (err) {
 		logger.error('Failed to get stays', err)
 		res.status(400).send({ err: 'Failed to get stays' })
@@ -39,10 +39,8 @@ export async function getStayById(req, res) {
 }
 
 export async function addStay(req, res) {
-	const { loggedinUser, body: stay } = req
-
+	const { body: stay } = req
 	try {
-		stay.owner = loggedinUser
 		const addedStay = await stayService.add(stay)
 		res.json(addedStay)
 	} catch (err) {
@@ -52,14 +50,7 @@ export async function addStay(req, res) {
 }
 
 export async function updateStay(req, res) {
-	const { loggedinUser, body: stay } = req
-	const { _id: userId, isAdmin } = loggedinUser
-
-	if (!isAdmin && stay.owner._id !== userId) {
-		res.status(403).send('Not your stay...')
-		return
-	}
-
+	const { body: stay } = req
 	try {
 		const updatedStay = await stayService.update(stay)
 		res.json(updatedStay)
@@ -73,7 +64,6 @@ export async function removeStay(req, res) {
 	try {
 		const stayId = req.params.id
 		const removedId = await stayService.remove(stayId)
-
 		res.send(removedId)
 	} catch (err) {
 		logger.error('Failed to remove stay', err)

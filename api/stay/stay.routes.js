@@ -11,7 +11,7 @@ const router = express.Router()
 router.get('/', log, getStays)
 router.get('/:id', log, getStayById)
 router.post('/', log, addStay)
-router.put('/:id', updateStay)
+router.put('/', updateStay)
 router.delete('/:id', removeStay)
 //Require auth for add, update, delete
 

@@ -3,7 +3,6 @@ import { ObjectId } from 'mongodb'
 import { logger } from '../../services/logger.service.js'
 import { makeId } from '../../services/util.service.js'
 import { dbService } from '../../services/db.service.js'
-import { asyncLocalStorage } from '../../services/als.service.js'
 import { createUserData } from '../../services/data/user.data.js'
 import { createStayData } from '../../services/data/stay.data.js'
 import { createOrderData } from '../../services/data/order.data.js'
@@ -25,7 +24,7 @@ async function query(filterBy = {}) {
 	_createData()
 
 	try {
-		const collection = await dbService.getCollection('stay')
+		const collection = await dbService.getCollection(COLLECTION_NAME)
 		let { city, country, startDate, endDate, adults, children, infants,
 			label, type, price, rooms, amenities, booking, standout
 		} = filterBy
@@ -74,11 +73,8 @@ async function query(filterBy = {}) {
 async function getById(stayId) {
 	try {
 		const criteria = { _id: ObjectId.createFromHexString(stayId) }
-
-		const collection = await dbService.getCollection('stay')
+		const collection = await dbService.getCollection(COLLECTION_NAME)
 		const stay = await collection.findOne(criteria)
-
-		stay.createdAt = stay._id.getTimestamp()
 		return stay
 	} catch (err) {
 		logger.error(`while finding stay ${stayId}`, err)
@@ -87,19 +83,12 @@ async function getById(stayId) {
 }
 
 async function remove(stayId) {
-	const { loggedinUser } = asyncLocalStorage.getStore()
-	const { _id: ownerId, isAdmin } = loggedinUser
-
 	try {
 		const criteria = {
 			_id: ObjectId.createFromHexString(stayId),
 		}
-		if (!isAdmin) criteria['owner._id'] = ownerId
-
-		const collection = await dbService.getCollection('stay')
-		const res = await collection.deleteOne(criteria)
-
-		if (res.deletedCount === 0) throw ('Not your stay')
+		const collection = await dbService.getCollection(COLLECTION_NAME)
+		await collection.deleteOne(criteria)
 		return stayId
 	} catch (err) {
 		logger.error(`cannot remove stay ${stayId}`, err)
@@ -109,9 +98,8 @@ async function remove(stayId) {
 
 async function add(stay) {
 	try {
-		const collection = await dbService.getCollection('stay')
+		const collection = await dbService.getCollection(COLLECTION_NAME)
 		await collection.insertOne(stay)
-
 		return stay
 	} catch (err) {
 		logger.error('cannot insert stay', err)
@@ -120,14 +108,13 @@ async function add(stay) {
 }
 
 async function update(stay) {
-	const stayToSave = { vendor: stay.vendor, speed: stay.speed }
-
 	try {
-		const criteria = { _id: ObjectId.createFromHexString(stay._id) }
-
-		const collection = await dbService.getCollection('stay')
-		await collection.updateOne(criteria, { $set: stayToSave })
-
+		const { _id } = stay
+		const criteria = { _id: ObjectId.createFromHexString(_id) }
+		delete stay._id
+		const collection = await dbService.getCollection(COLLECTION_NAME)
+		await collection.updateOne(criteria, { $set: stay })
+		stay._id = _id
 		return stay
 	} catch (err) {
 		logger.error(`cannot update stay ${stay._id}`, err)
@@ -140,7 +127,7 @@ async function addStayMsg(stayId, msg) {
 		const criteria = { _id: ObjectId.createFromHexString(stayId) }
 		msg.id = makeId()
 
-		const collection = await dbService.getCollection('stay')
+		const collection = await dbService.getCollection(COLLECTION_NAME)
 		await collection.updateOne(criteria, { $push: { msgs: msg } })
 
 		return msg
@@ -154,7 +141,7 @@ async function removeStayMsg(stayId, msgId) {
 	try {
 		const criteria = { _id: ObjectId.createFromHexString(stayId) }
 
-		const collection = await dbService.getCollection('stay')
+		const collection = await dbService.getCollection(COLLECTION_NAME)
 		await collection.updateOne(criteria, { $pull: { msgs: { id: msgId } } })
 
 		return msgId
@@ -165,7 +152,7 @@ async function removeStayMsg(stayId, msgId) {
 }
 
 async function _createData() {
-	const stayCollection = await dbService.getCollection('stay')
+	const stayCollection = await dbService.getCollection(COLLECTION_NAME)
 	const userCollection = await dbService.getCollection('user')
 	const orderCollection = await dbService.getCollection('order')
 
@@ -282,6 +269,6 @@ function _filterExtra({ type, price, rooms, amenities, booking, standout }) {
 	if (standoutConditions.length) {
 		filter['$and'] = [...(filter['$and'] || []), ...standoutConditions]
 	}
-	console.log(filter)
+
 	return filter
 }
