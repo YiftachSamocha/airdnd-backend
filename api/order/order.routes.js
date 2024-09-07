@@ -12,12 +12,12 @@ const router = express.Router()
 
 router.get('/', log, getOrders)
 router.get('/:id', log, getOrderById)
-router.post('/', log, requireAuth, addOrder)
-router.put('/:id', requireAuth, updateOrder)
-router.delete('/:id', requireAuth, removeOrder)
+router.post('/', log, addOrder)
+router.put('/', updateOrder)
+router.delete('/:id', removeOrder)
 // router.delete('/:id', requireAuth, requireAdmin, removeOrder)
 
-router.post('/:id/msg', requireAuth, addOrderMsg)
-router.delete('/:id/msg/:msgId', requireAuth, removeOrderMsg)
+// router.post('/:id/msg', requireAuth, addOrderMsg)
+// router.delete('/:id/msg/:msgId', requireAuth, removeOrderMsg)
 
 export const orderRoutes = router

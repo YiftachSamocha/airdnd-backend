@@ -4,11 +4,9 @@ import { orderService } from './order.service.js'
 export async function getOrders(req, res) {
 	try {
 		const filterBy = {
-			txt: req.query.txt || '',
-			minSpeed: +req.query.minSpeed || 0,
-            sortField: req.query.sortField || '',
-            sortDir: req.query.sortDir || 1,
-			pageIdx: req.query.pageIdx,
+			host: req.query.host || '',
+			guest: req.query.guest || '',
+			stay: req.query.stay || ''
 		}
 		const orders = await orderService.query(filterBy)
 		res.json(orders)
@@ -30,10 +28,9 @@ export async function getOrderById(req, res) {
 }
 
 export async function addOrder(req, res) {
-	const { loggedinUser, body: order } = req
+	const { body: order } = req
 
 	try {
-		order.owner = loggedinUser
 		const addedOrder = await orderService.add(order)
 		res.json(addedOrder)
 	} catch (err) {
@@ -43,14 +40,7 @@ export async function addOrder(req, res) {
 }
 
 export async function updateOrder(req, res) {
-	const { loggedinUser, body: order } = req
-    const { _id: userId, isAdmin } = loggedinUser
-
-    if(!isAdmin && order.owner._id !== userId) {
-        res.status(403).send('Not your order...')
-        return
-    }
-
+	const { body: order } = req
 	try {
 		const updatedOrder = await orderService.update(order)
 		res.json(updatedOrder)
@@ -64,7 +54,6 @@ export async function removeOrder(req, res) {
 	try {
 		const orderId = req.params.id
 		const removedId = await orderService.remove(orderId)
-
 		res.send(removedId)
 	} catch (err) {
 		logger.error('Failed to remove order', err)
