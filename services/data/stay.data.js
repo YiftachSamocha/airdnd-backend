@@ -69,7 +69,7 @@ const kitchenImg = '../../assets/imgs/Extra/kitchen.png'
 const washingMashineImg = '../../assets/imgs/Extra/washing-mashine.png'
 const wifiImg = '../../assets/imgs/Extra/wifi.png'
 
-export function createStayData(users, listingsPerHost = 2) {
+export function createStayData(users, listingsPerHost = 4) {
     const stays = []
     const hosts = users.filter(user => user.host)
     for (let i = 0; i < hosts.length; i++) {
@@ -196,7 +196,7 @@ const livingRoomImgs = [
     '7534294', '6782346'
 ]
 
-async function createSleep() {
+function createSleep() {
     const bedTypes = ["king bed", "queen bed", "double bed", "single bed"];
     const roomAmount = getRandomIntInclusive(1, 6);
     let rooms = [];

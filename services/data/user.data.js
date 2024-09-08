@@ -3,7 +3,7 @@ import { getRandomIntInclusive } from "../util.service.js"
 import { getData } from "./stay.data.js"
 
 
-export function createUserData(hostsPerLoc = 1, additionalUsersAmount = 20) {
+export function createUserData(hostsPerLoc = 2, additionalUsersAmount = 20) {
     const usersToSave = []
     //CREATE HOSTS
     for (var i = 0; i < locations.length; i++) {
@@ -19,7 +19,7 @@ export function createUserData(hostsPerLoc = 1, additionalUsersAmount = 20) {
         const user = createUser()
         usersToSave.push(user)
     }
-    usersToSave[0].fullname = 'idokadosh'
+    usersToSave[0].username = 'idokadosh'
     usersToSave[0].password = 'idokadosh'
     return usersToSave
 }

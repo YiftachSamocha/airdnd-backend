@@ -21,9 +21,8 @@ export const stayService = {
 }
 
 async function query(filterBy = {}) {
-	await _createData()
-
 	try {
+		await _createData()
 		const collection = await dbService.getCollection(COLLECTION_NAME)
 		let { city, country, startDate, endDate, adults, children, infants,
 			label, type, price, rooms, amenities, booking, standout
@@ -61,8 +60,9 @@ async function query(filterBy = {}) {
 		if (type || price || rooms || amenities || booking || standout) {
 			filter = { ...filter, ..._filterExtra({ type, price, rooms, amenities, booking, standout }) }
 		}
-
 		let stays = await collection.find(filter).toArray()
+		//Evoid over stays
+		if (stays.length > 100) stays = stays.slice(0, 100)
 		return stays
 	} catch (err) {
 		logger.error('cannot find stays', err)
@@ -167,16 +167,18 @@ async function _createData() {
 		await userCollection.deleteMany({})
 		await stayCollection.deleteMany({})
 		await orderCollection.deleteMany({})
-		const newUsers = createUserData()
-		const newStays = createStayData(newUsers)
+
+		let newUsers = createUserData()
+		await userCollection.insertMany(newUsers)
+		newUsers = await userCollection.find({}).toArray()
+
+		let newStays = createStayData(newUsers)
+		await stayCollection.insertMany(newStays)
+		newStays = await stayCollection.find({}).toArray()
+
+
 		const newOrders = createOrderData(newStays, newUsers)
-
-		if (newUsers.length && newStays.length && newOrders.length) {
-			await stayCollection.insertMany(newStays)
-			await userCollection.insertMany(newUsers)
-			await orderCollection.insertMany(newOrders)
-		}
-
+		await orderCollection.insertMany(newOrders)
 	}
 }
 
