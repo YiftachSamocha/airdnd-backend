@@ -62,7 +62,7 @@ async function query(filterBy = {}) {
 		}
 		let stays = await collection.find(filter).toArray()
 		//Evoid over stays
-		if (stays.length > 100) stays = stays.slice(0, 100)
+		//	if (stays.length > 100) stays = stays.slice(0, 100)
 		return stays
 	} catch (err) {
 		logger.error('cannot find stays', err)
@@ -99,6 +99,8 @@ async function remove(stayId) {
 async function add(stay) {
 	try {
 		const collection = await dbService.getCollection(COLLECTION_NAME)
+		stay.host._id = new ObjectId(stay.host._id)
+		stay.guest._id = new ObjectId(stay.guest._id)
 		await collection.insertOne(stay)
 		return stay
 	} catch (err) {

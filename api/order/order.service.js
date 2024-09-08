@@ -24,7 +24,7 @@ async function query(filterBy = {}) {
 		let criteria = {}
 		const collection = await dbService.getCollection(COLLECTION_NAME)
 		if (host) {
-			criteria['host._id'] = ObjectId.createFromHexString(host)
+			criteria['host._id'] = ObjectId.isValid(host) ? new ObjectId(host) : host;
 		}
 		if (guest) {
 			criteria['guest._id'] = ObjectId.createFromHexString(guest)
@@ -71,6 +71,7 @@ async function remove(orderId) {
 async function add(order) {
 	try {
 		const collection = await dbService.getCollection(COLLECTION_NAME)
+		order.host._id = new ObjectId(order.host._id)
 		await collection.insertOne(order)
 		return order
 	} catch (err) {

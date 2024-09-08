@@ -77,7 +77,7 @@ async function update(userToSave) {
         delete userToSave.username
         return userToSave
     } catch (err) {
-        logger.error(`cannot update user ${user._id}`, err)
+        logger.error(`cannot update user ${userToSave._id}`, err)
         throw err
     }
 }
