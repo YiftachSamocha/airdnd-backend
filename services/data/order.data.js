@@ -31,7 +31,9 @@ function createOrder(stay, dateIndex, users) {
         stay: {
             _id: stay._id,
             name: stay.name,
-            price: stay.price
+            price: stay.price,
+            img: stay.imgs[0],
+            location: stay.location.city,
         },
         totalPrice,
         host: stay.host,
