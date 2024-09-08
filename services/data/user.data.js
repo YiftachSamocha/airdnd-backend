@@ -21,6 +21,8 @@ export function createUserData(hostsPerLoc = 2, additionalUsersAmount = 20) {
     }
     usersToSave[0].username = 'idokadosh'
     usersToSave[0].password = 'idokadosh'
+    usersToSave[usersToSave.length - 1].username = 'drakon'
+    usersToSave[usersToSave.length - 1].password = 'drakon'
     return usersToSave
 }
 
