@@ -19,6 +19,8 @@ export function createUserData(hostsPerLoc = 1, additionalUsersAmount = 20) {
         const user = createUser()
         usersToSave.push(user)
     }
+    usersToSave[0].fullname = 'idokadosh'
+    usersToSave[0].password = 'idokadosh'
     return usersToSave
 }
 

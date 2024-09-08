@@ -21,7 +21,7 @@ export const stayService = {
 }
 
 async function query(filterBy = {}) {
-	_createData()
+	await _createData()
 
 	try {
 		const collection = await dbService.getCollection(COLLECTION_NAME)
@@ -160,22 +160,23 @@ async function _createData() {
 	const userColCount = await userCollection.countDocuments()
 	const orderColCount = await orderCollection.countDocuments()
 
-
-	if (stayColCount == 0 ||
+	if (stayColCount === 0 ||
 		userColCount === 0 ||
 		orderColCount === 0) {
-		await stayCollection.deleteMany()
-		await userCollection.deleteMany()
-		await orderCollection.deleteMany()
 
+		await userCollection.deleteMany({})
+		await stayCollection.deleteMany({})
+		await orderCollection.deleteMany({})
 		const newUsers = createUserData()
-		await userCollection.insertMany(newUsers)
-
 		const newStays = createStayData(newUsers)
-		await stayCollection.insertMany(newStays)
-
 		const newOrders = createOrderData(newStays, newUsers)
-		await orderCollection.insertMany(newOrders)
+
+		if (newUsers.length && newStays.length && newOrders.length) {
+			await stayCollection.insertMany(newStays)
+			await userCollection.insertMany(newUsers)
+			await orderCollection.insertMany(newOrders)
+		}
+
 	}
 }
 

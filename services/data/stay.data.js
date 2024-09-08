@@ -78,7 +78,6 @@ export function createStayData(users, listingsPerHost = 2) {
             stays.push(stay)
         }
     }
-    
     return stays
 }
 
@@ -99,7 +98,7 @@ export function createStay(host) {
         type: getRandomItems(types, 1),
         amenities: getRandomItems(amenities, getRandomIntInclusive(10, 35)),
         labels: getRandomItems(labels, 3),
-        reservedDates: generateAvailabilityRanges(),
+        reservedDates: generateSequentialAvailabilityRanges(),
         host: {
             _id: host._id,
             fullname: host.fullname,
@@ -197,7 +196,7 @@ const livingRoomImgs = [
     '7534294', '6782346'
 ]
 
-function createSleep() {
+async function createSleep() {
     const bedTypes = ["king bed", "queen bed", "double bed", "single bed"];
     const roomAmount = getRandomIntInclusive(1, 6);
     let rooms = [];
@@ -627,19 +626,22 @@ const labels = [
     { label: 'yurts', img: yurtsImg }
 ]
 
-function getRandomDateRange(startDate, endDate) {
+function getRandomDateRange(startDate, endDate, minDays = 2, maxDays = 10) {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
     // Generate a random start date within the given range
     const randomStart = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 
-    // Set a minimum end date 2 days after the random start date
-    const minEnd = new Date(randomStart.getTime());
-    minEnd.setDate(randomStart.getDate() + 2);
+    // Set a random end date between the minimum and maximum range duration
+    const duration = Math.floor(Math.random() * (maxDays - minDays + 1)) + minDays;
+    const randomEnd = new Date(randomStart.getTime());
+    randomEnd.setDate(randomStart.getDate() + duration);
 
-    // Generate a random end date after the minimum end date
-    const randomEnd = new Date(minEnd.getTime() + Math.random() * (end.getTime() - minEnd.getTime()));
+    // Ensure the end date doesn't exceed the month's end date
+    if (randomEnd > end) {
+        randomEnd.setTime(end.getTime());
+    }
 
     return {
         startDate: randomStart,
@@ -647,37 +649,39 @@ function getRandomDateRange(startDate, endDate) {
     };
 }
 
-// Helper function to check if two date ranges overlap
-function isOverlapping(range1, range2) {
-    return range1.startDate < range2.endDate && range2.startDate < range1.endDate;
-}
-
-function generateAvailabilityRanges() {
+function generateSequentialAvailabilityRanges() {
     const months = [
-        { start: new Date('2024-09-01').getTime(), end: new Date('2024-09-30').getTime() },
-        { start: new Date('2024-10-01').getTime(), end: new Date('2024-10-31').getTime() },
-        { start: new Date('2024-11-01').getTime(), end: new Date('2024-11-30').getTime() },
-        { start: new Date('2024-12-01').getTime(), end: new Date('2024-12-31').getTime() },
-        { start: new Date('2025-01-01').getTime(), end: new Date('2025-01-31').getTime() },
+        { start: new Date('2024-09-01'), end: new Date('2024-09-30') },
+        { start: new Date('2024-10-01'), end: new Date('2024-10-31') },
+        { start: new Date('2024-11-01'), end: new Date('2024-11-30') },
+        { start: new Date('2024-12-01'), end: new Date('2024-12-31') },
+        { start: new Date('2025-01-01'), end: new Date('2025-01-31') },
     ];
 
     const availabilityRanges = [];
 
     months.forEach(month => {
-        const numRanges = Math.min(Math.floor(Math.random() * 2) + 2, 10); // Generate 2-3 ranges, with a max of 10
+        const numRanges = Math.min(Math.floor(Math.random() * 2) + 2, 10); // Generate 2-3 ranges per month
+
+        let currentStart = new Date(month.start);
 
         for (let i = 0; i < numRanges; i++) {
-            let newRange;
+            // Generate a random range starting from the current start date
+            const newRange = getRandomDateRange(currentStart, month.end);
 
-            // Generate a new range and check if it overlaps with any existing range
-            do {
-                newRange = getRandomDateRange(month.start, month.end);
-            } while (availabilityRanges.some(existingRange => isOverlapping(existingRange, newRange)));
-
-            // Push the non-overlapping range to the result array
+            // Push the generated range to the availabilityRanges array
             availabilityRanges.push(newRange);
 
-            // Limit to 10 reservations
+            // Set the new start date for the next range to be after the current range's end date
+            currentStart = new Date(newRange.endDate.getTime());
+            currentStart.setDate(currentStart.getDate() + 1); // Ensure the next range starts at least 1 day later
+
+            // Stop generating ranges if we've hit the end of the month
+            if (currentStart >= month.end) {
+                break;
+            }
+
+            // Limit to 10 total reservations across months
             if (availabilityRanges.length >= 10) {
                 break;
             }
@@ -686,7 +690,6 @@ function generateAvailabilityRanges() {
 
     return availabilityRanges;
 }
-
 
 
 
