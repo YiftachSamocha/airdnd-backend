@@ -100,7 +100,7 @@ async function add(stay) {
 	try {
 		const collection = await dbService.getCollection(COLLECTION_NAME)
 		stay.host._id = new ObjectId(stay.host._id)
-		stay.guest._id = new ObjectId(stay.guest._id)
+		//stay.guest._id = new ObjectId(stay.guest._id)
 		await collection.insertOne(stay)
 		return stay
 	} catch (err) {
