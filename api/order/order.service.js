@@ -72,6 +72,7 @@ async function add(order) {
 	try {
 		const collection = await dbService.getCollection(COLLECTION_NAME)
 		order.host._id = new ObjectId(order.host._id)
+		order.guest._id = new ObjectId(order.guest._id)
 		await collection.insertOne(order)
 		return order
 	} catch (err) {
