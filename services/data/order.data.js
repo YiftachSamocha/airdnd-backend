@@ -18,7 +18,7 @@ function createOrder(stay, dateIndex, users) {
     const pets = getRandomIntInclusive(0, 2)
     const total = adults + children + infants
     const totalPrice = (total * stay.price.night) + stay.price.cleaning
-    const createdAt = new Date(new Date(2024, 7, 1).getTime() + Math.random() * (new Date(2024, 8, 30, 23, 59, 59, 999).getTime() - new Date(2024, 7, 1).getTime()))
+    const createdAt = new Date(new Date(2024, 4, 1).getTime() + Math.random() * (new Date(2024, 7, 31, 23, 59, 59, 999).getTime() - new Date(2024, 4, 1).getTime()))
     const randomUserIndex = getRandomIntInclusive(0, users.length - 1)
     const guest = users[randomUserIndex]
 
