@@ -248,7 +248,7 @@ function createSleep() {
 }
 
 function generateImgUrls(imgs) {
-    const imgIds = getRandomItems(imgs, getRandomIntInclusive(4, 10))
+    const imgIds = getRandomItems(imgs, getRandomIntInclusive(5, 10))
     return imgIds.map(imgId => {
         return `https://images.pexels.com/photos/${imgId}/pexels-photo-${imgId}.jpeg?width=400`
     })
@@ -527,17 +527,17 @@ const amenities = [
     { type: 'accessibility', name: 'Accessible bathroom', imgUrl: '/src/assets/imgs/amenities/free-parking.svg' },
     { type: 'accessibility', name: 'Grab rails', imgUrl: '/src/assets/imgs/amenities/free-parking.svg' },
 
-    { type: 'laundry', name: 'Washing machine', imgUrl: '/src/assets/imgs/amenities/no-drayer.svg' },
-    { type: 'laundry', name: 'Dryer', imgUrl: '/src/assets/imgs/amenities/no-drayer.svg' },
-    { type: 'laundry', name: 'Iron', imgUrl: '/src/assets/imgs/amenities/no-drayer.svg' },
-    { type: 'laundry', name: 'Ironing board', imgUrl: '/src/assets/imgs/amenities/no-drayer.svg' },
-    { type: 'laundry', name: 'Laundry detergent', imgUrl: '/src/assets/imgs/amenities/no-drayer.svg' },
+    { type: 'laundry', name: 'Washing machine', imgUrl: '/src/assets/imgs/amenities/no-drayr.svg' },
+    { type: 'laundry', name: 'Dryer', imgUrl: '/src/assets/imgs/amenities/no-drayr.svg' },
+    { type: 'laundry', name: 'Iron', imgUrl: '/src/assets/imgs/amenities/no-dryer.svg' },
+    { type: 'laundry', name: 'Ironing board', imgUrl: '/src/assets/imgs/amenities/no-drayr.svg' },
+    { type: 'laundry', name: 'Laundry detergent', imgUrl: '/src/assets/imgs/amenities/no-drayr.svg' },
 
-    { type: 'familyFeatures', name: 'Crib', imgUrl: '/src/assets/imgs/amenities/no-wifi.svg' },
-    { type: 'familyFeatures', name: 'High chair', imgUrl: '/src/assets/imgs/amenities/no-wifi.svg' },
-    { type: 'familyFeatures', name: 'Child safety locks', imgUrl: '/src/assets/imgs/amenities/no-wifi.svg' },
-    { type: 'familyFeatures', name: 'Children’s books and toys', imgUrl: '/src/assets/imgs/amenities/no-wifi.svg' },
-    { type: 'familyFeatures', name: 'Baby monitor', imgUrl: '/src/assets/imgs/amenities/no-wifi.svg' },
+    { type: 'familyFeatures', name: 'Crib', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
+    { type: 'familyFeatures', name: 'High chair', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
+    { type: 'familyFeatures', name: 'Child safety locks', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
+    { type: 'familyFeatures', name: 'Children’s books and toys', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
+    { type: 'familyFeatures', name: 'Baby monitor', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
 
     { type: 'petFriendly', name: 'Pets allowed', imgUrl: '/src/assets/imgs/amenities/no-kitchen.svg' },
     { type: 'petFriendly', name: 'Pet bowls', imgUrl: '/src/assets/imgs/amenities/no-kitchen.svg' },

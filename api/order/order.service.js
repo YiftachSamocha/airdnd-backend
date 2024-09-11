@@ -72,6 +72,7 @@ async function add(order) {
 	try {
 		const collection = await dbService.getCollection(COLLECTION_NAME)
 		order.host._id = new ObjectId(order.host._id)
+		order.guest._id = new ObjectId(order.guest._id)
 		await collection.insertOne(order)
 		return order
 	} catch (err) {
@@ -83,6 +84,8 @@ async function add(order) {
 async function update(orderToSave) {
 	try {
 		const { _id } = orderToSave
+		orderToSave.host._id = new ObjectId(orderToSave.host._id)
+		orderToSave.guest._id = new ObjectId(orderToSave.guest._id)
 		const criteria = { _id: ObjectId.createFromHexString(_id) }
 		delete orderToSave._id
 		const collection = await dbService.getCollection(COLLECTION_NAME)

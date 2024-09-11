@@ -43,7 +43,7 @@ function createHost() {
     const location = getRandomItems(locations, 1)
     return {
         reviews: getRandomIntInclusive(3, 100),
-        rating: Math.round((Math.random() * 4 + 1) * 100) / 100,
+        rating: Math.round((Math.random() * 1.5 + 3.5) * 100) / 100,
         yearsHosting: getRandomIntInclusive(1, 15),
         responseRate: getRandomIntInclusive(80, 100),
         personalDetails: createPersonalDetails(location),
