@@ -14,7 +14,7 @@ export function setupSocketAPI(http) {
         socket.on('disconnect', socket => {
             logger.info(`Socket disconnected [id: ${socket.id}]`)
         })
-       
+
         socket.on('set-user-socket', userId => {
             logger.info(`Setting socket.userId = ${userId} for socket [id: ${socket.id}]`)
             socket.userId = userId
@@ -28,6 +28,11 @@ export function setupSocketAPI(http) {
         socket.on('change-order-status', order => {
             logger.info(`user ${order.host.fullname} changed order status`)
             gIo.emit('take-order-status', order)
+        })
+
+        socket.on('add-order', order => {
+            logger.info(`user ${order.guest.fullname} ordered stay from ${order.host.fullname}`)
+            gIo.emit('take-order', order)
         })
 
     })
