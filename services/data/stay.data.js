@@ -93,7 +93,7 @@ export function createStay(host) {
         highlights: getRandomItems(highlights, 3),
         price: {
             night: getRandomIntInclusive(500, 2000),
-            cleaning: getRandomIntInclusive(200, 1000)
+            cleaning: getRandomIntInclusive(100, 500)
         },
         type: getRandomItems(types, 1),
         amenities: getRandomItems(amenities, getRandomIntInclusive(10, 35)),
@@ -110,7 +110,7 @@ export function createStay(host) {
             personalDetails: host.host.personalDetails
         },
         location,
-        reviews: getRandomItems(reviews, getRandomIntInclusive(1, 15)),
+        reviews: getRandomItems(reviews, getRandomIntInclusive(3, 15)),
         thingsToKnow: {
             houseRules: getRandomItems(houseRules, getRandomIntInclusive(6, 12)),
             safetyProperty: getRandomItems(safetyProperty, getRandomIntInclusive(4, 10)),
@@ -459,7 +459,7 @@ const highlights = [
 ]
 const types = ['home', 'room', 'apartment', 'villa',]
 const amenities = [
-    { type: 'main', name: 'wifi', imgUrl:'/src/assets/imgs/amenities/no-wifi.svg'},
+    { type: 'main', name: 'wifi', imgUrl: '/src/assets/imgs/amenities/no-wifi.svg' },
     { type: 'main', name: 'Air conditioning', imgUrl: acImg },
     { type: 'main', name: 'kitchen', imgUrl: '/src/assets/imgs/more/kitchen.svg' },
     { type: 'main', name: 'free parking', imgUrl: parkingImg },
@@ -740,8 +740,6 @@ function getRandomDate() {
 }
 
 const reviewsTxts = [
-    'What a lovely apartment!',
-    'Had a great stay, highly recommend.',
     'Great place! The views were stunning, and the house was very comfortable. Slightly remote, but perfect for relaxation.',
     'Wonderful stay! The hosts were amazing and the house had everything we needed. The location was a bit far from town but worth it for the peace and quiet.',
     'Fantastic property with beautiful views. The house was clean and cozy. The location was a little isolated, but that made it more enjoyable.',
@@ -762,39 +760,29 @@ const reviewsTxts = [
     'The house was great and the hosts were very friendly. It was a bit far from local attractions, but the peaceful surroundings made it worth it.',
     'Lovely property with excellent views. The house was comfortable and clean. The location was a little remote, but that only added to the relaxation.',
     'Fantastic property with stunning views. The house had everything we needed. The slightly isolated location was perfect for a quiet escape.',
-    'Not bad, but could use some improvements.',
-    'The apartment was okay, but not what I expected.',
-    'Amazing experience! Will definitely return.',
-    'Very disappointed. The place was not as described.',
-    'Perfect for a short stay, had everything I needed.',
-    'Nice place but a bit noisy at night.',
-    'Clean and comfortable. Worth the price.',
-    'Great location, but the apartment was a bit small.'
+    'The property was a delightful escape with stunning views and a cozy atmosphere. While the house was clean and well-equipped, the location was a bit far from local amenities. The hosts were incredibly welcoming and made sure we had everything we needed. The peace and quiet we experienced were well worth the minor inconvenience of the distance from town.',
+    'We had a wonderful stay at this property. The house was stylish and comfortable, with beautiful views all around. The location was somewhat isolated, but that added to the serenity and provided the perfect environment for a relaxing vacation. The hosts were attentive and provided excellent local recommendations. The slight distance to nearby attractions was easily outweighed by the tranquility.',
+    'Our experience at this property was fantastic. The house was clean, well-furnished, and offered magnificent views. The remote location provided a peaceful retreat, although it was a bit of a drive to get to local services. The hosts were very friendly and ensured our stay was enjoyable. The seclusion of the property was ideal for a quiet getaway, despite the distance.',
+    'This property was a gem. The house was charming and had all the amenities we needed for a comfortable stay. The views were breathtaking, and the slightly remote location offered a peaceful escape from the hustle and bustle. Although it was a bit far from the nearest town, the tranquility and relaxation we found were worth the trade-off. The hosts were helpful and made us feel at home.',
+    'We thoroughly enjoyed our time at this property. The house was well-maintained, clean, and had beautiful decor. The isolated location provided a serene environment, though it was a bit of a drive to local attractions. The hosts were very accommodating and made sure we had a pleasant stay. The peace and quiet we enjoyed made the remote location worthwhile.',
+    'The stay at this property was very satisfying. The house was lovely, with all the necessary amenities and stunning views. The location was somewhat remote, but that contributed to the peaceful atmosphere. While it was a bit of a drive to get to local services, the overall experience was great. The hosts were friendly and ensured we had everything we needed.',
+    'A wonderful retreat with a clean, cozy house and fantastic views. The location was a bit far from local amenities, but the seclusion added to the peaceful experience. The hosts were very helpful and provided excellent service. The distance to nearby attractions was a minor issue compared to the tranquility and relaxation we enjoyed at the property.',
+    'This property provided an excellent getaway with beautiful scenery and a comfortable home. The slightly remote location was perfect for a quiet escape, though it took a bit longer to get to local services. The hosts were attentive and made sure our stay was enjoyable. The peace and serenity of the property more than made up for the distance from town.',
+    'We had a great stay at this property. The house was well-kept and had amazing views. The remote location provided a peaceful retreat from everyday life, even though it was a bit far from the nearest town. The hosts were friendly and ensured that everything was perfect for our stay. The tranquility of the property was well worth the slight inconvenience of the distance.',
+    'The property was a fantastic choice for our vacation. The house was clean, comfortable, and had wonderful views. The location was somewhat isolated, which contributed to a very relaxing stay. Although it was a bit far from local amenities, the hosts were very accommodating and provided excellent service. The peaceful setting made the remote location worthwhile.',
+    // 'Not bad, but could use some improvements.',
+    // 'The apartment was okay, but not what I expected.',
+    // 'Amazing experience! Will definitely return.',
+    // 'Very disappointed. The place was not as described.',
+    // 'Perfect for a short stay, had everything I needed.',
+    // 'Nice place but a bit noisy at night.',
+    // 'Clean and comfortable. Worth the price.',
+    // 'Great location, but the apartment was a bit small.'
 ]
 const fullnames = [
     'James Green', 'Anna Smith', 'Robert Johnson', 'Emily Davis', 'Michael Brown',
     'Sarah Wilson', 'David Lee', 'Jessica Harris', 'Daniel Clark', 'Laura Lewis'
 ]
-
-// const reviews = Array.from({ length: 10 }, () => {
-//     const isFemale = Math.random() < 0.5
-//     const fullname = getNextName(isFemale)
-//     const imgUrl = getNextImageUrl(isFemale)
-//     const randomLocation = getRandomItems(locations, 1)
-//     return {
-//         _id: makeId(),
-//         txt: getRandomItems(reviewsTxts, 1),
-//         rate: getRandomIntInclusive(4, 5),
-//         date: getRandomDate(),
-//         by: {
-//             _id: makeId(),
-//             fullname: fullname,
-//             imgUrl: imgUrl,
-//             address: `${randomLocation.city}, ${randomLocation.country}`,
-//             daysStayed: getRandomInt(1, 5),
-//         }
-//     }
-// })
 
 const womanImgs = generateSequentialImageUrls(20, 50, 'women');
 const manImgs = generateSequentialImageUrls(20, 50, 'men');
@@ -855,17 +843,45 @@ const menNames = [
     'Owen Evans', 'Gabriel Robinson', 'Carter Torres', 'Jayden Reed', 'Dylan Rivera'
 ]
 
+const ratingCategoriesList = [
+    'cleanliness',
+    'accuracy',
+    'checkIn',
+    'communication',
+    'location',
+    'value'
+]
+
+function generateRandomRatingCategories(categories) {
+    const updatedRatings = {}
+    categories.forEach(category => {
+        updatedRatings[category] = getRandomIntInclusive(4, 5)
+    })
+    return updatedRatings
+}
+
+function calculateOverallRate(ratingCategories) {
+    const values = Object.values(ratingCategories)
+    const count4 = values.filter(value => value === 4).length
+    const count5 = values.filter(value => value === 5).length
+    return count5 > count4 ? 5 : 4
+}
+
 
 const reviews = Array.from({ length: 10 }, () => {
     const isFemale = Math.random() < 0.5
     const fullname = getNextName(isFemale)
     const imgUrl = getNextImageUrl(isFemale)
     const randomLocation = getRandomItems(locations, 1)
+    const ratingCategories = generateRandomRatingCategories(ratingCategoriesList)
+    const overallRate = calculateOverallRate(ratingCategories)
+
     return {
         _id: makeId(),
         txt: getRandomItems(reviewsTxts, 1),
-        rate: getRandomIntInclusive(4, 5),
         date: getRandomDate(),
+        rate: overallRate,
+        ratingCategories,
         by: {
             _id: makeId(),
             fullname: fullname,
@@ -875,7 +891,7 @@ const reviews = Array.from({ length: 10 }, () => {
         }
     }
 })
-// console.log('livingIn', livingIn);
+console.log(reviews.ratingCategories)
 
 
 const houseRules = [
