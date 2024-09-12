@@ -32,7 +32,7 @@ async function query(filterBy = {}) {
 		if (stay) {
 			criteria['stay._id'] = ObjectId.createFromHexString(stay)
 		}
-		var orderCursor = await collection.find(criteria)
+		var orderCursor = await collection.find(criteria).sort({ createdAt: -1 })
 		const orders = orderCursor.toArray()
 		return orders
 	} catch (err) {
@@ -71,21 +71,19 @@ async function remove(orderId) {
 async function add(order) {
 	try {
 		const collection = await dbService.getCollection(COLLECTION_NAME)
-		order.host._id = new ObjectId(order.host._id)
-		order.guest._id = new ObjectId(order.guest._id)
-		await collection.insertOne(order)
-		return order
+		const orderToSave = correctData(order)
+		await collection.insertOne(orderToSave)
+		return orderToSave
 	} catch (err) {
 		logger.error('cannot insert order', err)
 		throw err
 	}
 }
 
-async function update(orderToSave) {
+async function update(order) {
 	try {
-		const { _id } = orderToSave
-		orderToSave.host._id = new ObjectId(orderToSave.host._id)
-		orderToSave.guest._id = new ObjectId(orderToSave.guest._id)
+		const { _id } = order
+		const orderToSave = correctData(order)
 		const criteria = { _id: ObjectId.createFromHexString(_id) }
 		delete orderToSave._id
 		const collection = await dbService.getCollection(COLLECTION_NAME)
@@ -127,16 +125,12 @@ async function removeOrderMsg(orderId, msgId) {
 	}
 }
 
-function _buildCriteria(filterBy) {
-	const criteria = {
-		vendor: { $regex: filterBy.txt, $options: 'i' },
-		speed: { $gte: filterBy.minSpeed },
-	}
+function correctData(order) {
+	order.host._id = new ObjectId(order.host._id)
+	order.guest._id = new ObjectId(order.guest._id)
+	order.createdAt = new Date(order.createdAt)
+	order.startDate = new Date(order.startDate)
+	order.endDate = new Date(order.endDate)
+	return order
 
-	return criteria
-}
-
-function _buildSort(filterBy) {
-	if (!filterBy.sortField) return {}
-	return { [filterBy.sortField]: filterBy.sortDir }
 }

@@ -1,4 +1,4 @@
-import { getRandomIntInclusive, makeId } from "../util.service.js";
+import { getRandomInt, getRandomIntInclusive, makeId } from "../util.service.js";
 const italyImg = '../../assets/imgs/countries/italy.jpeg';
 const spainImg = '../../assets/imgs/countries/spain.jpg';
 const portugalImg = '../../assets/imgs/countries/portugal.jpg';
@@ -742,6 +742,26 @@ function getRandomDate() {
 const reviewsTxts = [
     'What a lovely apartment!',
     'Had a great stay, highly recommend.',
+    'Great place! The views were stunning, and the house was very comfortable. Slightly remote, but perfect for relaxation.',
+    'Wonderful stay! The hosts were amazing and the house had everything we needed. The location was a bit far from town but worth it for the peace and quiet.',
+    'Fantastic property with beautiful views. The house was clean and cozy. The location was a little isolated, but that made it more enjoyable.',
+    'Had a lovely time here. The house was well-equipped and the hosts were very welcoming. The distance to local amenities was minor compared to the tranquility.',
+    'Perfect retreat! The property was charming and the hosts were friendly. It’s a bit far from everything, but the serenity and views were incredible.',
+    'Excellent stay! The home was beautiful and the surroundings were peaceful. The location was a little off the beaten path, but that added to the experience.',
+    'Really enjoyed our stay. The house was great and the views were amazing. The remote location was a small trade-off for the privacy and tranquility.',
+    'Great property with everything we needed. The hosts were very helpful. The location was a bit far from the nearest town, but we enjoyed the peace and quiet.',
+    'Wonderful experience! The house was clean and had beautiful decor. It was slightly remote, but that made for a very relaxing stay.',
+    'Nice place with fantastic views. The house was well-maintained. The location was a bit secluded, but that made it more peaceful.',
+    'Fantastic stay! The home was well-furnished and the hosts were very nice. It was a bit far from local attractions, but the peaceful setting was perfect.',
+    'Enjoyed every minute of our stay. The house was cozy and the views were stunning. The distance to town was minor compared to the tranquility we experienced.',
+    'Great rental! The house had all the amenities we needed and the hosts were very accommodating. The location was a bit remote but ideal for a quiet getaway.',
+    'Very pleased with our stay. The property was beautiful and well-equipped. The slightly isolated location was perfect for a relaxing retreat.',
+    'Had a great time! The house was lovely and the views were fantastic. The location was a little off the beaten path, but that just added to the charm.',
+    'Perfect spot for a getaway. The house was clean and comfortable. The remote location was a minor drawback compared to the overall experience.',
+    'Wonderful stay with beautiful views and a cozy house. The location was somewhat isolated, but it made for a very peaceful retreat.',
+    'The house was great and the hosts were very friendly. It was a bit far from local attractions, but the peaceful surroundings made it worth it.',
+    'Lovely property with excellent views. The house was comfortable and clean. The location was a little remote, but that only added to the relaxation.',
+    'Fantastic property with stunning views. The house had everything we needed. The slightly isolated location was perfect for a quiet escape.',
     'Not bad, but could use some improvements.',
     'The apartment was okay, but not what I expected.',
     'Amazing experience! Will definitely return.',
@@ -756,17 +776,107 @@ const fullnames = [
     'Sarah Wilson', 'David Lee', 'Jessica Harris', 'Daniel Clark', 'Laura Lewis'
 ]
 
-const reviews = Array.from({ length: 10 }, () => ({
-    _id: makeId(),
-    txt: getRandomItems(reviewsTxts, 1),
-    rate: getRandomIntInclusive(4, 5),
-    date: getRandomDate(),
-    by: {
-        _id: makeId(),
-        fullname: getRandomItems(fullnames, 1),
-        imgUrl: ''
+// const reviews = Array.from({ length: 10 }, () => {
+//     const isFemale = Math.random() < 0.5
+//     const fullname = getNextName(isFemale)
+//     const imgUrl = getNextImageUrl(isFemale)
+//     const randomLocation = getRandomItems(locations, 1)
+//     return {
+//         _id: makeId(),
+//         txt: getRandomItems(reviewsTxts, 1),
+//         rate: getRandomIntInclusive(4, 5),
+//         date: getRandomDate(),
+//         by: {
+//             _id: makeId(),
+//             fullname: fullname,
+//             imgUrl: imgUrl,
+//             address: `${randomLocation.city}, ${randomLocation.country}`,
+//             daysStayed: getRandomInt(1, 5),
+//         }
+//     }
+// })
+
+const womanImgs = generateSequentialImageUrls(20, 50, 'women');
+const manImgs = generateSequentialImageUrls(20, 50, 'men');
+
+function generateSequentialImageUrls(start, end, gender) {
+    const urls = [];
+
+    for (let i = start; i <= end; i++) {
+        urls.push(`https://randomuser.me/api/portraits/${gender}/${i}.jpg`);
     }
-}))
+    return urls;
+}
+
+let currentIndexFemale = 0;
+let currentIndexMale = 0;
+function getNextImageUrl(isFemale) {
+    if (isFemale) {
+        if (currentIndexFemale >= womanImgs.length) {
+            currentIndexFemale = 0;
+        }
+        return womanImgs[currentIndexFemale++];
+    } else {
+        if (currentIndexMale >= manImgs.length) {
+            currentIndexMale = 0;
+        }
+        return manImgs[currentIndexMale++];
+    }
+}
+
+let currentIndexFemaleNames = 0;
+let currentIndexMaleNames = 0;
+
+function getNextName(isFemale) {
+    if (isFemale) {
+        if (currentIndexFemaleNames >= womenNames.length) {
+            currentIndexFemaleNames = 0;
+        }
+        return womenNames[currentIndexFemaleNames++];
+    } else {
+        if (currentIndexMaleNames >= menNames.length) {
+            currentIndexMaleNames = 0;
+        }
+        return menNames[currentIndexMaleNames++];
+    }
+}
+
+const womenNames = [
+    'Anna Smith', 'Emily Davis', 'Sarah Wilson', 'Jessica Harris', 'Laura Lewis',
+    'Olivia Martinez', 'Sophia Taylor', 'Isabella White', 'Mia Thompson', 'Charlotte King',
+    'Amelia Scott', 'Evelyn Young', 'Abigail Adams', 'Ella Mitchell', 'Ava Perez',
+    'Madison Campbell', 'Harper Roberts', 'Grace Lewis', 'Chloe Turner', 'Avery Rodriguez'
+]
+
+const menNames = [
+    'James Green', 'Robert Johnson', 'Michael Brown', 'David Lee', 'Daniel Clark',
+    'William Anderson', 'Liam Walker', 'Benjamin Hall', 'Lucas Allen', 'Henry Baker',
+    'Alexander Gonzalez', 'Sebastian Lopez', 'Jackson Hill', 'Mateo Wright', 'Elijah Martin',
+    'Owen Evans', 'Gabriel Robinson', 'Carter Torres', 'Jayden Reed', 'Dylan Rivera'
+]
+
+
+const reviews = Array.from({ length: 10 }, () => {
+    const isFemale = Math.random() < 0.5
+    const fullname = getNextName(isFemale)
+    const imgUrl = getNextImageUrl(isFemale)
+    const randomLocation = getRandomItems(locations, 1)
+    return {
+        _id: makeId(),
+        txt: getRandomItems(reviewsTxts, 1),
+        rate: getRandomIntInclusive(4, 5),
+        date: getRandomDate(),
+        by: {
+            _id: makeId(),
+            fullname: fullname,
+            imgUrl: imgUrl,
+            livingIn: `${randomLocation.city}, ${randomLocation.country}`,
+            daysStayed: getRandomInt(1, 5),
+        }
+    }
+})
+// console.log('livingIn', livingIn);
+
 
 const houseRules = [
     //  Checking In and Checking Out
