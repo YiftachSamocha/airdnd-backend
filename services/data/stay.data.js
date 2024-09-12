@@ -380,7 +380,7 @@ const highlights = [
     {
         main: 'Free parking on premises',
         sub: 'This place offers free parking for added convenience.',
-        imgUrl: '/src/assets/imgs/labels/lake-front.jpeg'
+        imgUrl: '/src/assets/imgs/more/parking.svg'
 
     },
     {
@@ -460,11 +460,11 @@ const highlights = [
 const types = ['home', 'room', 'apartment', 'villa',]
 const amenities = [
     { type: 'main', name: 'wifi', imgUrl:'/src/assets/imgs/amenities/no-wifi.svg'},
-    { type: 'main', name: 'Air conditioning', imgUrl: acImg },
-    { type: 'main', name: 'kitchen', imgUrl: '/src/assets/imgs/more/kitchen.svg' },
-    { type: 'main', name: 'free parking', imgUrl: parkingImg },
-    { type: 'main', name: 'Television', imgUrl: tvImg },
-    { type: 'main', name: 'washing mashine', imgUrl: washingMashineImg },
+    { type: 'main', name: 'Air conditioning', imgUrl: '/src/assets/imgs/more/aircon.svg'},
+    { type: 'main', name: 'kitchen', imgUrl: '/src/assets/imgs/more/kitchen1.svg' },
+    { type: 'main', name: 'free parking', imgUrl:'/src/assets/imgs/more/parking.svg' },
+    { type: 'main', name: 'Television', imgUrl: '/src/assets/imgs/Extra/tv.png' },
+    { type: 'main', name: 'washing mashine', imgUrl: '/src/assets/imgs/more/washer.svg' },
 
     { type: 'bathroom', name: 'Hair dryer', imgUrl: '/src/assets/imgs/more/hair-dryer.svg' },
     { type: 'bathroom', name: 'Shampoo', imgUrl: '/src/assets/imgs/amenities/essentials.svg' },
@@ -499,7 +499,7 @@ const amenities = [
     { type: 'livingRoom', name: 'DVD player', imgUrl: '/src/assets/imgs/amenities/host-greets-you.svg' },
     { type: 'livingRoom', name: 'Sofa', imgUrl: '/src/assets/imgs/amenities/host-greets-you.svg' },
     { type: 'livingRoom', name: 'Coffee table', imgUrl: '/src/assets/imgs/more/cofee.svg' },
-    { type: 'livingRoom', name: 'Books and reading material', imgUrl: '/src/assests/imgs/more/book.svg' },
+    { type: 'livingRoom', name: 'Books and reading material', imgUrl: '/src/assets/imgs/more/book.svg' },
 
     { type: 'outdoor', name: 'Patio or balcony', imgUrl: '/src/assets/imgs/amenities/patio.svg' },
     { type: 'outdoor', name: 'Garden', imgUrl: '/src/assets/imgs/amenities/backyard.svg' },
@@ -536,7 +536,7 @@ const amenities = [
     { type: 'familyFeatures', name: 'Crib', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
     { type: 'familyFeatures', name: 'High chair', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
     { type: 'familyFeatures', name: 'Child safety locks', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
-    { type: 'familyFeatures', name: 'Children’s books and toys', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
+    { type: 'familyFeatures', name: 'Children’s books and toys', imgUrl: '/src/assets/imgs/more/book.svg' },
     { type: 'familyFeatures', name: 'Baby monitor', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
 
     { type: 'petFriendly', name: 'Pets allowed', imgUrl: '/src/assets/imgs/amenities/no-kitchen.svg' },
@@ -554,7 +554,7 @@ const amenities = [
     { type: 'entertainment', name: 'Games', imgUrl: '/src/assets/imgs/amenities/gym.svg' },
     { type: 'entertainment', name: 'Board games', imgUrl: '/src/assets/imgs/amenities/pool-table.svg' },
     { type: 'entertainment', name: 'Outdoor toys', imgUrl: '/src/assets/imgs/Extra/pets.png' },
-    { type: 'entertainment', name: 'Books', imgUrl: '/src/assets/imgs/Extra/pets.svg' },
+    { type: 'entertainment', name: 'Books', imgUrl: '/src/assets/imgs/more/book.svg' },
     { type: 'entertainment', name: 'Music player', imgUrl: '/src/assets/imgs/amenities/piano.svg' }
 ]
 
