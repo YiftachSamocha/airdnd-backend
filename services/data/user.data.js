@@ -21,8 +21,12 @@ export function createUserData(hostsPerLoc = 2, additionalUsersAmount = 20) {
     }
     usersToSave[0].username = 'idokadosh'
     usersToSave[0].password = 'idokadosh'
+    usersToSave[0].fullname = 'Rivka Bashari'
+    usersToSave[0].imgUrl = 'https://res.cloudinary.com/dn08iwpyq/image/upload/v1726406811/rivkaImg_sblq6s.png'
     usersToSave[usersToSave.length - 1].username = 'drakon'
     usersToSave[usersToSave.length - 1].password = 'drakon'
+    usersToSave[usersToSave.length - 1].fullname = 'Yiftach Samocha'
+    usersToSave[usersToSave.length - 1].imgUrl = 'https://res.cloudinary.com/dn08iwpyq/image/upload/v1726406811/yiftachImg_etkmkb.png'
     return usersToSave
 }
 
