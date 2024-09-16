@@ -83,13 +83,19 @@ export function createStayData(users, listingsPerHost = 4) {
     return stays
 }
 
-function createStayForDemo(stays, host) {
+function createStayForDemo(stays, user) {
     const newStays = [...stays]
     newStays[0].imgs = ['https://res.cloudinary.com/dn08iwpyq/image/upload/v1726406811/rivkaImg_sblq6s.png', ...imgs]
     newStays[0].sleep = createSleep(3)
     newStays[0].type = 'home'
-    newStays[0].reservedDates = [{ startDate: new Date('2024-09-25'), endDate: new Date('2024-09-29') }, { startDate: new Date('2024-10-03'), endDate: new Date('2024-10-06') }, { startDate: new Date('2024-10-17'), endDate: new Date('2024-10-22') }]
-    newStays[0].host = host
+    newStays[0].reservedDates =
+        [{ startDate: new Date('2024-09-25'), endDate: new Date('2024-09-29') },
+        { startDate: new Date('2024-10-03'), endDate: new Date('2024-10-06') },
+        { startDate: new Date('2024-10-17'), endDate: new Date('2024-10-22') },
+        { startDate: new Date('2024-11-02'), endDate: new Date('2024-11-07') },
+        { startDate: new Date('2024-11-18'), endDate: new Date('2024-11-21') }]
+
+    newStays[0].host = { _id: user._id, fullname: user.fullname, imgUrl: user.imgUrl, ...user.host }
     newStays[0].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
     return newStays
 
@@ -120,7 +126,7 @@ export function createStay(host) {
             reviews: host.host.reviews,
             rating: host.host.rating,
             yearsHosting: host.host.yearsHosting,
-            responceRate: host.host.responseRate,
+            responseRate: host.host.responseRate,
             personalDetails: host.host.personalDetails
         },
         location,
