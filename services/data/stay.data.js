@@ -70,7 +70,7 @@ const washingMashineImg = '/src/assets/imgs/more/washer.svg'
 const wifiImg = '../../assets/imgs/Extra/wifi.png'
 
 export function createStayData(users, listingsPerHost = 4) {
-    const stays = []
+    let stays = []
     const hosts = users.filter(user => user.host)
     for (let i = 0; i < hosts.length; i++) {
         for (let j = 0; j < listingsPerHost; j++) {
@@ -78,8 +78,21 @@ export function createStayData(users, listingsPerHost = 4) {
             stays.push(stay)
         }
     }
+    stays = createStayForDemo(stays, users[0])
     stays.sort(() => Math.random() - 0.5)
     return stays
+}
+
+function createStayForDemo(stays, host) {
+    const newStays = [...stays]
+    newStays[0].imgs = ['https://res.cloudinary.com/dn08iwpyq/image/upload/v1726406811/rivkaImg_sblq6s.png', ...imgs]
+    newStays[0].sleep = createSleep(3)
+    newStays[0].type = 'home'
+    newStays[0].reservedDates = [{ startDate: new Date('2024-09-25'), endDate: new Date('2024-09-29') }, { startDate: new Date('2024-10-03'), endDate: new Date('2024-10-06') }, { startDate: new Date('2024-10-17'), endDate: new Date('2024-10-22') }]
+    newStays[0].host = host
+    newStays[0].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    return newStays
+
 }
 
 export function createStay(host) {
@@ -197,9 +210,9 @@ const livingRoomImgs = [
     '7534294', '6782346'
 ]
 
-function createSleep() {
+function createSleep(length = 0) {
     const bedTypes = ["king bed", "queen bed", "double bed", "single bed"];
-    const roomAmount = getRandomIntInclusive(1, 6);
+    const roomAmount = length || getRandomIntInclusive(1, 6)
     let rooms = [];
     let maxCapacity = 0;
 
