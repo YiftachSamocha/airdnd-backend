@@ -60,13 +60,8 @@ async function query(filterBy = {}) {
 		if (type || price || rooms || amenities || booking || standout) {
 			filter = { ...filter, ..._filterExtra({ type, price, rooms, amenities, booking, standout }) }
 		}
-		const totalDocuments = await collection.countDocuments(filter)
-
-		let stays = await collection.aggregate([
-			{ $match: filter },
-			{ $sample: { size: totalDocuments } }
-		]).toArray()
-
+		let stays = await collection.find(filter).toArray()
+		
 		return stays
 	} catch (err) {
 		logger.error('cannot find stays', err)
