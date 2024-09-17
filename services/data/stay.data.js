@@ -247,12 +247,52 @@ function createSleep() {
     };
 }
 
-function generateImgUrls(imgs) {
-    const imgIds = getRandomItems(imgs, getRandomIntInclusive(5, 10))
-    return imgIds.map(imgId => {
-        return `https://images.pexels.com/photos/${imgId}/pexels-photo-${imgId}.jpeg?width=400`
-    })
+// function generateImgUrls(imgs) {
+//     const imgIds = getRandomItems(imgs, getRandomIntInclusive(5, 10))
+//     return imgIds.map(imgId => {
+//         return `https://images.pexels.com/photos/${imgId}/pexels-photo-${imgId}.jpeg?width=400`
+//     })
+// }
+
+
+  let currentLetterIndex = 0
+  const letters = 'abcdefghkmnrst'.split('')
+  const totalImages = 28
+
+function generateImgUrls() {
+    //     const imgIds = getRandomItems(imgs, getRandomIntInclusive(5))
+    // const imgIds = getRandomItems(imgs, 5)
+
+    // console.log('imgIds', imgIds);
+
+    const cloudName = "dfacuc12l"
+    const folder = "airdnd"
+    // const letters = 'abcdefghkmnrst'.split('')
+    // .split('')
+    // abcdefghkmnrst
+    // ijlopquvwxyz
+  
+    const urls = []
+    const letter = letters[currentLetterIndex]
+    // https://res.cloudinary.com/dfacuc12l/image/upload/a1.webp
+
+    for (let i = 1; i <= 5; i++) {
+        const imgId = `${letter}${i}`;
+        const url = `https://res.cloudinary.com/${cloudName}/image/upload/${imgId}.webp`;
+        urls.push(url)
+    }
+    console.log('urls', urls);
+
+    // currentLetterIndex++
+    currentLetterIndex = (currentLetterIndex + 1) % letters.length;
+    console.log('currentLetterIndex', currentLetterIndex);
+
+    return urls
 }
+
+
+
+
 
 const descriptions = [
     "This stylish loft offers an open layout with industrial charm, featuring exposed brick walls and high ceilings. Perfectly sized for comfort, it includes modern furnishings and a spacious living area. The location provides easy access to everything you need.",
@@ -459,10 +499,10 @@ const highlights = [
 ]
 const types = ['home', 'room', 'apartment', 'villa',]
 const amenities = [
-    { type: 'main', name: 'wifi', imgUrl:'/src/assets/imgs/amenities/no-wifi.svg'},
-    { type: 'main', name: 'Air conditioning', imgUrl: '/src/assets/imgs/more/aircon.svg'},
+    { type: 'main', name: 'wifi', imgUrl: '/src/assets/imgs/amenities/no-wifi.svg' },
+    { type: 'main', name: 'Air conditioning', imgUrl: '/src/assets/imgs/more/aircon.svg' },
     { type: 'main', name: 'kitchen', imgUrl: '/src/assets/imgs/more/kitchen1.svg' },
-    { type: 'main', name: 'free parking', imgUrl:'/src/assets/imgs/more/parking.svg' },
+    { type: 'main', name: 'free parking', imgUrl: '/src/assets/imgs/more/parking.svg' },
     { type: 'main', name: 'Television', imgUrl: '/src/assets/imgs/Extra/tv.png' },
     { type: 'main', name: 'washing mashine', imgUrl: '/src/assets/imgs/more/washer.svg' },
 
@@ -760,17 +800,16 @@ const reviewsTxts = [
     'The house was great and the hosts were very friendly. It was a bit far from local attractions, but the peaceful surroundings made it worth it.',
     'Lovely property with excellent views. The house was comfortable and clean. The location was a little remote, but that only added to the relaxation.',
     'Fantastic property with stunning views. The house had everything we needed. The slightly isolated location was perfect for a quiet escape.',
-    'The property was a delightful escape with stunning views and a cozy atmosphere. While the house was clean and well-equipped, the location was a bit far from local amenities. The hosts were incredibly welcoming and made sure we had everything we needed. The peace and quiet we experienced were well worth the minor inconvenience of the distance from town.',
-    'We had a wonderful stay at this property. The house was stylish and comfortable, with beautiful views all around. The location was somewhat isolated, but that added to the serenity and provided the perfect environment for a relaxing vacation. The hosts were attentive and provided excellent local recommendations. The slight distance to nearby attractions was easily outweighed by the tranquility.',
-    'Our experience at this property was fantastic. The house was clean, well-furnished, and offered magnificent views. The remote location provided a peaceful retreat, although it was a bit of a drive to get to local services. The hosts were very friendly and ensured our stay was enjoyable. The seclusion of the property was ideal for a quiet getaway, despite the distance.',
-    'This property was a gem. The house was charming and had all the amenities we needed for a comfortable stay. The views were breathtaking, and the slightly remote location offered a peaceful escape from the hustle and bustle. Although it was a bit far from the nearest town, the tranquility and relaxation we found were worth the trade-off. The hosts were helpful and made us feel at home.',
-    'We thoroughly enjoyed our time at this property. The house was well-maintained, clean, and had beautiful decor. The isolated location provided a serene environment, though it was a bit of a drive to local attractions. The hosts were very accommodating and made sure we had a pleasant stay. The peace and quiet we enjoyed made the remote location worthwhile.',
-    'The stay at this property was very satisfying. The house was lovely, with all the necessary amenities and stunning views. The location was somewhat remote, but that contributed to the peaceful atmosphere. While it was a bit of a drive to get to local services, the overall experience was great. The hosts were friendly and ensured we had everything we needed.',
-    'A wonderful retreat with a clean, cozy house and fantastic views. The location was a bit far from local amenities, but the seclusion added to the peaceful experience. The hosts were very helpful and provided excellent service. The distance to nearby attractions was a minor issue compared to the tranquility and relaxation we enjoyed at the property.',
-    'This property provided an excellent getaway with beautiful scenery and a comfortable home. The slightly remote location was perfect for a quiet escape, though it took a bit longer to get to local services. The hosts were attentive and made sure our stay was enjoyable. The peace and serenity of the property more than made up for the distance from town.',
-    'We had a great stay at this property. The house was well-kept and had amazing views. The remote location provided a peaceful retreat from everyday life, even though it was a bit far from the nearest town. The hosts were friendly and ensured that everything was perfect for our stay. The tranquility of the property was well worth the slight inconvenience of the distance.',
-    'The property was a fantastic choice for our vacation. The house was clean, comfortable, and had wonderful views. The location was somewhat isolated, which contributed to a very relaxing stay. Although it was a bit far from local amenities, the hosts were very accommodating and provided excellent service. The peaceful setting made the remote location worthwhile.',
-    // 'Not bad, but could use some improvements.',
+    'Charming apartment with modern amenities. The host was incredibly welcoming and made sure we had everything we needed. The tranquil surroundings provided a perfect retreat.',
+    'Beautifully decorated apartment with top-notch facilities. The owner was friendly and very accommodating. The serene environment made our stay very relaxing.',
+    'The apartment was spacious and well-maintained. The host went above and beyond to ensure our comfort. The peaceful location was ideal for a rejuvenating getaway.',
+    'Exceptional stay with breathtaking views. The property was spotless, and the owner’s hospitality was outstanding. The quiet area offered a perfect escape from the city.',
+    'A cozy and elegant apartment with everything we needed. The host was very helpful and made our stay delightful. The calm setting was ideal for unwinding.',
+    'Stylish and comfortable apartment with a lovely atmosphere. The owner was incredibly helpful and made us feel at home. The peaceful location was perfect for relaxation.',
+    'Wonderful apartment with fantastic amenities. The host was attentive and ensured we had a great stay. The tranquil environment provided a perfect backdrop for our vacation.',
+    'Immaculate apartment with a great layout. The owner was very responsive and made us feel welcome. The quiet surroundings offered a wonderful escape from everyday life.',
+    'Charming property with excellent facilities. The host was exceptionally friendly and provided valuable local tips. The serene location was ideal for a restful break.',
+    'Spacious and well-appointed apartment with a lovely ambiance. The owner’s hospitality was impressive, and the peaceful setting made our stay truly enjoyable.',
     // 'The apartment was okay, but not what I expected.',
     // 'Amazing experience! Will definitely return.',
     // 'Very disappointed. The place was not as described.',
@@ -891,7 +930,7 @@ const reviews = Array.from({ length: 10 }, () => {
         }
     }
 })
-console.log(reviews.ratingCategories)
+// console.log(reviews.ratingCategories)
 
 
 const houseRules = [
