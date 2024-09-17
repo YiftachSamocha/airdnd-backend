@@ -70,7 +70,7 @@ const washingMashineImg = '/src/assets/imgs/more/washer.svg'
 const wifiImg = '../../assets/imgs/Extra/wifi.png'
 
 export function createStayData(users, listingsPerHost = 4) {
-    const stays = []
+    let stays = []
     const hosts = users.filter(user => user.host)
     for (let i = 0; i < hosts.length; i++) {
         for (let j = 0; j < listingsPerHost; j++) {
@@ -78,7 +78,27 @@ export function createStayData(users, listingsPerHost = 4) {
             stays.push(stay)
         }
     }
+    stays = createStayForDemo(stays, users[0])
+    stays.sort(() => Math.random() - 0.5)
     return stays
+}
+
+function createStayForDemo(stays, user) {
+    const newStays = [...stays]
+    newStays[0].imgs = ['https://res.cloudinary.com/dn08iwpyq/image/upload/v1726406811/rivkaImg_sblq6s.png', ...imgs]
+    newStays[0].sleep = createSleep(3)
+    newStays[0].type = 'home'
+    newStays[0].reservedDates =
+        [{ startDate: new Date('2024-09-25'), endDate: new Date('2024-09-29') },
+        { startDate: new Date('2024-10-03'), endDate: new Date('2024-10-06') },
+        { startDate: new Date('2024-10-17'), endDate: new Date('2024-10-22') },
+        { startDate: new Date('2024-11-02'), endDate: new Date('2024-11-07') },
+        { startDate: new Date('2024-11-18'), endDate: new Date('2024-11-21') }]
+
+    newStays[0].host = { _id: user._id, fullname: user.fullname, imgUrl: user.imgUrl, ...user.host }
+    newStays[0].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    return newStays
+
 }
 
 export function createStay(host) {
@@ -106,7 +126,7 @@ export function createStay(host) {
             reviews: host.host.reviews,
             rating: host.host.rating,
             yearsHosting: host.host.yearsHosting,
-            responceRate: host.host.responseRate,
+            responseRate: host.host.responseRate,
             personalDetails: host.host.personalDetails
         },
         location,
@@ -196,9 +216,9 @@ const livingRoomImgs = [
     '7534294', '6782346'
 ]
 
-function createSleep() {
+function createSleep(length = 0) {
     const bedTypes = ["king bed", "queen bed", "double bed", "single bed"];
-    const roomAmount = getRandomIntInclusive(1, 6);
+    const roomAmount = length || getRandomIntInclusive(1, 6)
     let rooms = [];
     let maxCapacity = 0;
 
@@ -571,7 +591,7 @@ const amenities = [
     { type: 'laundry', name: 'Dryer', imgUrl: '/src/assets/imgs/more/dryer.svg' },
     { type: 'laundry', name: 'Iron', imgUrl: '/src/assets/imgs/more/iron.svg' },
     { type: 'laundry', name: 'Ironing board', imgUrl: '/src/assets/imgs/more/iron.svg' },
-    { type: 'laundry', name: 'Laundry detergent', imgUrl: '/src/assets/imgs/more/shampoo.svg' },
+    { type: 'laundry', name: 'Laundry detergent', imgUrl: '/src/assets/imgs/more/washer.svg' },
 
     { type: 'familyFeatures', name: 'Crib', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
     { type: 'familyFeatures', name: 'High chair', imgUrl: '/src/assets/imgs/Extra/wifi.png' },
@@ -745,8 +765,6 @@ const locations = [
     { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 },
     { country: 'Germany', city: 'Berlin', lat: 52.52, lng: 13.40 },
     { country: 'UK', city: 'London', lat: 51.51, lng: -0.13 },
-    { country: 'Italy', city: 'Rome', lat: 41.90, lng: 12.49 },
-    { country: 'Spain', city: 'Madrid', lat: 40.42, lng: -3.71 },
     { country: 'Brazil', city: 'Rio de Janeiro', lat: -22.91, lng: -43.20 },
     { country: 'Argentina', city: 'Buenos Aires', lat: -34.60, lng: -58.38 },
     { country: 'Japan', city: 'Tokyo', lat: 35.68, lng: 139.76 },

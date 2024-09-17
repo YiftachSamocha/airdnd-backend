@@ -61,8 +61,7 @@ async function query(filterBy = {}) {
 			filter = { ...filter, ..._filterExtra({ type, price, rooms, amenities, booking, standout }) }
 		}
 		let stays = await collection.find(filter).toArray()
-		//Evoid over stays
-		//	if (stays.length > 100) stays = stays.slice(0, 100)
+		
 		return stays
 	} catch (err) {
 		logger.error('cannot find stays', err)
