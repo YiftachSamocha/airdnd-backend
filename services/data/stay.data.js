@@ -298,7 +298,7 @@ function createSleep(length = 0) {
 
 
   let currentLetterIndex = 0
-  const letters = 'abcdefghkmnopqrstuyzw'.split('')
+  const letters = 'abcdefghkmnopqrstuyzwabcdefg'.split('')
   const totalImages = 28
 
 function generateImgUrls() {
