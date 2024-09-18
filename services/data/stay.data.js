@@ -78,9 +78,8 @@ export function createStayData(users, listingsPerHost = 4) {
             stays.push(stay)
         }
     }
-    stays = createStayForDemo(stays, users[0])
     stays.sort(() => Math.random() - 0.5)
-    stays[0].imgs.unshift( `https://res.cloudinary.com/dfacuc12l/image/upload/a1.webp`)
+    stays[0].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/a1.webp`)
     stays[1].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/b1.webp`)
     stays[2].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/s1.webp`)
     stays[3].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/d1.webp`)
@@ -101,24 +100,31 @@ export function createStayData(users, listingsPerHost = 4) {
     stays[18].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/g1.webp`)
     stays[19].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/w1.webp`)
     stays[20].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/o1.webp`)
-
+    stays = createStayForDemo(stays, users[0])
     return stays
 }
 
 function createStayForDemo(stays, user) {
+    const idx = getRandomInt(7, 15)
     const newStays = [...stays]
-    newStays[0].imgs = ['https://res.cloudinary.com/dn08iwpyq/image/upload/v1726406811/rivkaImg_sblq6s.png', ...imgs]
-    newStays[0].sleep = createSleep(3)
-    newStays[0].type = 'home'
-    newStays[0].reservedDates =
+    newStays[idx].sleep = createSleep(3)
+    newStays[idx].type = 'home'
+    newStays[idx].reservedDates =
         [{ startDate: new Date('2024-09-25'), endDate: new Date('2024-09-29') },
         { startDate: new Date('2024-10-03'), endDate: new Date('2024-10-06') },
         { startDate: new Date('2024-10-17'), endDate: new Date('2024-10-22') },
         { startDate: new Date('2024-11-02'), endDate: new Date('2024-11-07') },
         { startDate: new Date('2024-11-18'), endDate: new Date('2024-11-21') }]
-
-    newStays[0].host = { _id: user._id, fullname: user.fullname, imgUrl: user.imgUrl, ...user.host }
-    newStays[0].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    newStays[idx].imgs = ['https://res.cloudinary.com/dfacuc12l/image/upload/demo1.webp',
+        'https://res.cloudinary.com/dfacuc12l/image/upload/demo2.webp',
+        'https://res.cloudinary.com/dfacuc12l/image/upload/demo3.webp',
+        'https://res.cloudinary.com/dfacuc12l/image/upload/demo4.webp',
+        'https://res.cloudinary.com/dfacuc12l/image/upload/demo5.webp']
+    newStays[idx].host = { _id: user._id, fullname: user.fullname, imgUrl: user.imgUrl, ...user.host }
+    newStays[idx].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    newStays[idx].sleep.rooms = [{ roomType: 'bedroom', bedType: 'king bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo4.webp' },
+    { roomType: 'bedroom', bedType: 'queen bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo6.webp' },
+    { roomType: 'bedroom', bedType: 'single bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo7.webp' }]
     return newStays
 
 }
@@ -297,19 +303,19 @@ function createSleep(length = 0) {
 // }
 
 
-  let currentLetterIndex = 0
-  const letters = 'abcdefghkmnopqrstuyzwabcdefg'.split('')
-  const totalImages = 28
+let currentLetterIndex = 0
+const letters = 'abcdefghkmnopqrstuyzwabcdefg'.split('')
+const totalImages = 28
 
 function generateImgUrls() {
     const cloudName = "dfacuc12l"
     const folder = "airdnd"
     // abcdefghkmnrst
     // ijlopquvwxyz
-  
+
     const urls = []
     const letter = letters[currentLetterIndex]
-  
+
     for (let i = 1; i <= 5; i++) {
         const imgId = `${letter}${i}`;
         const url = `https://res.cloudinary.com/${cloudName}/image/upload/${imgId}.webp`;
