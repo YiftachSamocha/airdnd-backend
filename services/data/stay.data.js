@@ -80,6 +80,28 @@ export function createStayData(users, listingsPerHost = 4) {
     }
     stays = createStayForDemo(stays, users[0])
     stays.sort(() => Math.random() - 0.5)
+    stays[0].imgs.unshift( `https://res.cloudinary.com/dfacuc12l/image/upload/a1.webp`)
+    stays[1].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/b1.webp`)
+    stays[2].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/s1.webp`)
+    stays[3].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/d1.webp`)
+    stays[4].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/e1.webp`)
+    stays[5].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/c1.webp`)
+    stays[6].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/m1.webp`)
+    stays[7].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/h1.webp`)
+    stays[8].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/z1.webp`)
+    stays[9].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/y1.webp`)
+    stays[10].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/u1.webp`)
+    stays[11].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/k1.webp`)
+    stays[12].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/t1.webp`)
+    stays[13].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/f1.webp`)
+    stays[14].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/p1.webp`)
+    stays[15].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/q1.webp`)
+    stays[16].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/r1.webp`)
+    stays[17].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/n1.webp`)
+    stays[18].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/g1.webp`)
+    stays[19].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/w1.webp`)
+    stays[20].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/o1.webp`)
+
     return stays
 }
 
@@ -280,33 +302,21 @@ function createSleep(length = 0) {
   const totalImages = 28
 
 function generateImgUrls() {
-    //     const imgIds = getRandomItems(imgs, getRandomIntInclusive(5))
-    // const imgIds = getRandomItems(imgs, 5)
-
-    // console.log('imgIds', imgIds);
-
     const cloudName = "dfacuc12l"
     const folder = "airdnd"
-    // const letters = 'abcdefghkmnrst'.split('')
-    // .split('')
     // abcdefghkmnrst
     // ijlopquvwxyz
   
     const urls = []
     const letter = letters[currentLetterIndex]
-    // https://res.cloudinary.com/dfacuc12l/image/upload/a1.webp
-
+  
     for (let i = 1; i <= 5; i++) {
         const imgId = `${letter}${i}`;
         const url = `https://res.cloudinary.com/${cloudName}/image/upload/${imgId}.webp`;
         urls.push(url)
     }
-    console.log('urls', urls);
-
     // currentLetterIndex++
     currentLetterIndex = (currentLetterIndex + 1) % letters.length;
-    console.log('currentLetterIndex', currentLetterIndex);
-
     return urls
 }
 
@@ -909,12 +919,23 @@ const ratingCategoriesList = [
     'value'
 ]
 
+// function generateRandomRatingCategories(categories) {
+//     const updatedRatings = {}
+//     categories.forEach(category => {
+//         updatedRatings[category] = getRandomIntInclusive(4, 5)
+//     })
+//     return updatedRatings
+// }
+
 function generateRandomRatingCategories(categories) {
     const updatedRatings = {}
     categories.forEach(category => {
-        updatedRatings[category] = getRandomIntInclusive(4, 5)
+
+        const randomValue = Math.random();
+        updatedRatings[category] = randomValue < 0.6 ? 5 : 4;
     })
-    return updatedRatings
+
+    return updatedRatings;
 }
 
 function calculateOverallRate(ratingCategories) {
