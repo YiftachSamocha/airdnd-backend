@@ -916,31 +916,28 @@ const ratingCategoriesList = [
     'value'
 ]
 
-// function generateRandomRatingCategories(categories) {
-//     const updatedRatings = {}
-//     categories.forEach(category => {
-//         updatedRatings[category] = getRandomIntInclusive(4, 5)
-//     })
-//     return updatedRatings
-// }
-
 function generateRandomRatingCategories(categories) {
     const updatedRatings = {}
-    categories.forEach(category => {
+    const thresholds = [0.7, 0.8, 0.9]
 
+    categories.forEach((category, index) => {
         const randomValue = Math.random();
-        updatedRatings[category] = randomValue < 0.6 ? 5 : 4;
-    })
+        const threshold = thresholds[(index % 3)]
+
+        updatedRatings[category] = randomValue < threshold ? 5 : 4;
+    });
 
     return updatedRatings;
 }
 
+
 function calculateOverallRate(ratingCategories) {
-    const values = Object.values(ratingCategories)
-    const count4 = values.filter(value => value === 4).length
-    const count5 = values.filter(value => value === 5).length
-    return count5 > count4 ? 5 : 4
+    const values = Object.values(ratingCategories);
+    const total = values.reduce((acc, value) => acc + value, 0);
+    const average = total / values.length
+    return parseFloat(average.toFixed(2))
 }
+
 
 
 const reviews = Array.from({ length: 10 }, () => {
