@@ -404,7 +404,7 @@ const highlights = [
     {
         main: 'Highly rated location',
         sub: '100% of recent guests gave the location a 5-star rating.',
-        imgUrl: '/src/assets/imgs/icons/star.svg'
+        imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/star.svg'
 
     },
     {
@@ -446,7 +446,7 @@ const highlights = [
     {
         main: 'Great check-in experience',
         sub: '100% of recent guests gave the check-in process a 5-star rating.',
-        imgUrl: '/src/assets/imgs/icons/star.svg'
+        imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/star.svg'
 
     },
     {
