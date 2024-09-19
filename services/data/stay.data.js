@@ -125,6 +125,12 @@ function createStayForDemo(stays, user) {
     newStays[idx].sleep.rooms = [{ roomType: 'bedroom', bedType: 'king bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo4.webp' },
     { roomType: 'bedroom', bedType: 'queen bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo6.webp' },
     { roomType: 'bedroom', bedType: 'single bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo7.webp' }]
+    newStays[6].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    newStays[17].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    newStays[23].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    newStays[30].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    newStays[33].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+    newStays[41].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
     return newStays
 
 }
