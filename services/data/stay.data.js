@@ -483,7 +483,7 @@ const highlights = [
     {
         main: 'Fully equipped kitchen',
         sub: 'Guests appreciated the well-stocked kitchen for home-cooked meals.',
-        imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/bed&breakfast.jpeg'
+        imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/breakfast.jpeg'
 
     },
     {
