@@ -100,40 +100,40 @@ export function createStayData(users, listingsPerHost = 4) {
     stays[18].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/g1.webp`)
     stays[19].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/w1.webp`)
     stays[20].imgs.unshift(`https://res.cloudinary.com/dfacuc12l/image/upload/o1.webp`)
-    stays = createStayForDemo(stays, users[0])
+    // stays = createStayForDemo(stays, users[0])
     return stays
 }
 
-function createStayForDemo(stays, user) {
-    const idx = getRandomInt(7, 15)
-    const newStays = [...stays]
-    newStays[idx].sleep = createSleep(3)
-    newStays[idx].type = 'home'
-    newStays[idx].reservedDates =
-        [{ startDate: new Date('2024-09-25'), endDate: new Date('2024-09-29') },
-        { startDate: new Date('2024-10-03'), endDate: new Date('2024-10-06') },
-        { startDate: new Date('2024-10-17'), endDate: new Date('2024-10-22') },
-        { startDate: new Date('2024-11-02'), endDate: new Date('2024-11-07') },
-        { startDate: new Date('2024-11-18'), endDate: new Date('2024-11-21') }]
-    newStays[idx].imgs = ['https://res.cloudinary.com/dfacuc12l/image/upload/demo1.webp',
-        'https://res.cloudinary.com/dfacuc12l/image/upload/demo2.webp',
-        'https://res.cloudinary.com/dfacuc12l/image/upload/demo3.webp',
-        'https://res.cloudinary.com/dfacuc12l/image/upload/demo4.webp',
-        'https://res.cloudinary.com/dfacuc12l/image/upload/demo5.webp']
-    newStays[idx].host = { _id: user._id, fullname: user.fullname, imgUrl: user.imgUrl, ...user.host }
-    newStays[idx].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
-    newStays[idx].sleep.rooms = [{ roomType: 'bedroom', bedType: 'king bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo4.webp' },
-    { roomType: 'bedroom', bedType: 'queen bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo6.webp' },
-    { roomType: 'bedroom', bedType: 'single bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo7.webp' }]
-    newStays[6].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
-    newStays[17].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
-    newStays[23].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
-    newStays[30].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
-    newStays[33].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
-    newStays[41].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
-    return newStays
+// function createStayForDemo(stays, user) {
+//     const idx = getRandomInt(7, 15)
+//     const newStays = [...stays]
+//     newStays[idx].sleep = createSleep(3)
+//     newStays[idx].type = 'home'
+//     newStays[idx].reservedDates =
+//         [{ startDate: new Date('2024-09-25'), endDate: new Date('2024-09-29') },
+//         { startDate: new Date('2024-10-03'), endDate: new Date('2024-10-06') },
+//         { startDate: new Date('2024-10-17'), endDate: new Date('2024-10-22') },
+//         { startDate: new Date('2024-11-02'), endDate: new Date('2024-11-07') },
+//         { startDate: new Date('2024-11-18'), endDate: new Date('2024-11-21') }]
+//     newStays[idx].imgs = ['https://res.cloudinary.com/dfacuc12l/image/upload/demo1.webp',
+//         'https://res.cloudinary.com/dfacuc12l/image/upload/demo2.webp',
+//         'https://res.cloudinary.com/dfacuc12l/image/upload/demo3.webp',
+//         'https://res.cloudinary.com/dfacuc12l/image/upload/demo4.webp',
+//         'https://res.cloudinary.com/dfacuc12l/image/upload/demo5.webp']
+//     newStays[idx].host = { _id: user._id, fullname: user.fullname, imgUrl: user.imgUrl, ...user.host }
+//     newStays[idx].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+//     newStays[idx].sleep.rooms = [{ roomType: 'bedroom', bedType: 'king bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo4.webp' },
+//     { roomType: 'bedroom', bedType: 'queen bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo6.webp' },
+//     { roomType: 'bedroom', bedType: 'single bed', imgUrl: 'https://res.cloudinary.com/dfacuc12l/image/upload/demo7.webp' }]
+//     newStays[6].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+//     newStays[17].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+//     newStays[23].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+//     newStays[30].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+//     newStays[33].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+//     newStays[41].location = { country: 'France', city: 'Paris', lat: 48.85, lng: 2.35 }
+//     return newStays
 
-}
+// }
 
 export function createStay(host) {
     const sleep = createSleep()
